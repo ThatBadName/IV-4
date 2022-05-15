@@ -3,6 +3,7 @@ const dotenv = require("dotenv")
 const WOKCommands = require("wokcommands")
 const path = require("path")
 const maintenanceSchema = require('./models/mantenance-schema')
+const antispamSchema = require('./models/antispam-schema')
 
 const client = new DiscordJS.Client({
     intents: [
@@ -41,19 +42,27 @@ process.on("uncaughtException", (err, origin) => {
 });
 
 process.on("uncaughtExceptionMonitor", (err, origin) => {
-    console.log(" [antiCrash] :: Uncaught Exception/Catch (MONITOR)");
-    console.log(err, origin);
+    //console.log(" [antiCrash] :: Uncaught Exception/Catch (MONITOR)");
+    //console.log(err, origin);
 });
 
 process.on("multipleResolves", (type, promise, reason) => {
-    console.log(" [antiCrash] :: Multiple Resolves");
-    console.log(type, promise, reason);
+    //console.log(" [antiCrash] :: Multiple Resolves");
+    //console.log(type, promise, reason);
 });
 
 dotenv.config()
 setInterval(() => {
     client.emit('tick')
 }, 60 * 1000)
+
+client.on('tick', async() => {
+    try {
+        antispamSchema.collection.deleteMany()
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 client.on('ready', async () => {
     console.log('Bot online')
@@ -62,8 +71,8 @@ client.on('ready', async () => {
         commandsDir: path.join(__dirname, 'commands'),
         featuresDir: path.join(__dirname, 'features'),
         eventsDir: path.join(__dirname, 'events'), 
-        testServers: [''], //Your test server id
-        botOwners: [''], //Your id
+        testServers: ['919242919829979136'],
+        botOwners: ['804265795835265034', '739396064104415243'],
         mongoUri: process.env.MONGO_URI,
         dbOptions: {
             keepAlive: true

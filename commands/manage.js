@@ -481,7 +481,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the timeout command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the timeout command`)
                 return
             }
             if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return `You do not have permission to use this`
@@ -563,7 +563,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the remove timeout command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the remove timeout command`)
                 return
             }
             if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return `You do not have permission to use this`
@@ -625,7 +625,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the kick command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the kick command`)
                 return
             }
             if(!interaction.member.permissions.has('KICK_MEMBERS')) return `You do not have permission to use this`
@@ -700,7 +700,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the softban command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the softban command`)
                 return
             }
             if(!interaction.member.permissions.has('KICK_MEMBERS')) return `You do not have permission to use this`
@@ -779,7 +779,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the tempban command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the tempban command`)
                 return
             }
             if(!interaction.member.permissions.has('BAN_MEMBERS')) return `You do not have permission to use this`
@@ -901,7 +901,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the ban command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the ban command`)
                 return
             }
             if(!interaction.member.permissions.has('BAN_MEMBERS')) return `You do not have permission to use this`
@@ -981,7 +981,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the nickname command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the nickname command`)
                 return
             }
             if(!interaction.member.permissions.has('MANAGE_NICKNAMES')) return `You do not have permission to use this`
@@ -1004,7 +1004,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the forceban command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the forceban command`)
                 return
             }
 
@@ -1059,7 +1059,7 @@ module.exports = {
                     content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                     ephemeral: true,
                 })
-                console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the history command`)
+                //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the history command`)
                 return
             }
             const user = interaction.options.getUser('user')
@@ -1398,7 +1398,7 @@ module.exports = {
                 content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                 ephemeral: true,
             })
-            console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the forcehistory command`)
+            //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the forcehistory command`)
             return
         }
         const user = interaction.options.getString('userid')
@@ -1744,7 +1744,7 @@ module.exports = {
                 content: `\`${interaction.options.getString('code')}\` is not the correct code. No action has been taken`,
                 ephemeral: true,
             })
-            console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the strike command`)
+            //console.log(`${interaction.user.tag} (${interaction.user.id}), who tried "${interaction.options.getString('code')}" as the code, has got the moderation code wrong while trying to perform the strike command`)
             return
         }
         const subCommand = interaction.options.getSubcommand()

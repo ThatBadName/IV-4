@@ -17,7 +17,13 @@ module.exports = (client) => {
     if(message.member.permissions.has("ADMINISTRATOR")) return
 
         if (message.content.length > 300) {
-        message.channel.send(`${message.author} Sending large walls of text is considered spam. Please do not do it`)
+        message.channel.send(`${message.author} You have been muted for sending very long messages`)
+
+        var lineArray = message.content.match(/\n/g)
+        var lines = lineArray.length
+
+        if (lines > 5)
+        message.channel.send(`${message.author} You have been muted for sending walls of text`)
 
         try {
             const guild = message.guild
