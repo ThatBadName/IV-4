@@ -55,14 +55,6 @@ setInterval(() => {
     client.emit('tick')
 }, 60 * 1000)
 
-client.on('tick', async() => {
-    try {
-        antispamSchema.collection.deleteMany()
-    } catch (error) {
-        console.log(error)
-    }
-})
-
 client.on('ready', async () => {
     console.log('Bot online')
     console.log('done and Ready')
