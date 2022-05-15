@@ -3,7 +3,6 @@ const dotenv = require("dotenv")
 const WOKCommands = require("wokcommands")
 const path = require("path")
 const maintenanceSchema = require('./models/mantenance-schema')
-const antispamSchema = require('./models/antispam-schema')
 
 const client = new DiscordJS.Client({
     intents: [
