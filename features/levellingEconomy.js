@@ -62,6 +62,7 @@ module.exports = (client) => {
                     role: 0
                     })
             }
+            return
         }
 
         balanceSchema.findOne({guildId: message.guild.id, userId: message.author.id}, async(err, doc)=>{
