@@ -62,8 +62,8 @@ client.on('ready', async () => {
         commandsDir: path.join(__dirname, 'commands'),
         featuresDir: path.join(__dirname, 'features'),
         eventsDir: path.join(__dirname, 'events'), 
-        testServers: ['919242919829979136'],
-        botOwners: ['804265795835265034'],
+        testServers: [''], //Your test server id
+        botOwners: [''], //Your id
         mongoUri: process.env.MONGO_URI,
         dbOptions: {
             keepAlive: true
