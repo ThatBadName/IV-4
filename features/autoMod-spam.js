@@ -15,7 +15,7 @@ module.exports = (client) => {
     if(message.member.permissions.has("ADMINISTRATOR")) return
 
     const functions = require('../spam-check')
-    functions.spamCheck(message, set, 4000)
+    functions.spamCheck(message, set, 2000)
 
     })
 }
