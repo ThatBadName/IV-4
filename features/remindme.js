@@ -19,12 +19,17 @@ module.exports = (client) => {
             const channel = guild.channels.cache.get(channelId)
             if (!channel) continue
 
+            const user = await client.users.fetch(userId).catch(() => null);
+            if (!user) return
+
             const embed = new MessageEmbed()
             .setTitle('Reminder')
             .setDescription(`**${reminder}**\n\nSet <t:${Math.round(reminderSet.getTime() / 1000)}:R>`)
             .setColor('GOLD')
 
-            channel.send({content: `Reminder for <@${userId}>`, embeds: [embed]})
+            await user.send({embeds: [embed]}).catch(() => {
+                channel.send({content: `Reminder for <@${userId}>`, embeds: [embed]})
+            })
 
         }
 
