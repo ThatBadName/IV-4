@@ -55,6 +55,7 @@ setInterval(() => {
     client.emit('tick')
 }, 60 * 1000)
 
+
 client.on('ready', async () => {
     console.log('Bot online')
     console.log('done and Ready')

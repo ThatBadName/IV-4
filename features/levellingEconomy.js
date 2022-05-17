@@ -113,11 +113,17 @@ module.exports = (client) => {
                             });
         
                             const requiredXp = data.level * 500 + 100
+                            const xpBoosterWeekendEmbed = new MessageEmbed()
+                            .setTitle('Level Up')
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setColor('RANDOM')
+                            .setFooter({text: `Booster | Weekend XP booster`})
+
                             if (data.xp + give >= requiredXp) {
                                 data.xp = 0;
                                 data.level += 1
                                 data.save()
-                                message.channel.send(`XP Booster | ${message.author}, You have leveled up to **Level ${data.level}** (Since its the weekend you get double xp. You are also more likely to get some)`)
+                                message.channel.send({embeds: [xpBoosterWeekendEmbed]})
                             } else {
                                 data.xp += give;
                                 data.save();
@@ -146,11 +152,16 @@ module.exports = (client) => {
                             });
         
                             const requiredXp = data.level * 500 + 100
+                            const xpBoosterEmbed = new MessageEmbed()
+                            .setTitle('Level Up')
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setColor('RANDOM')
+                            .setFooter({text: `Booster`})
                             if (data.xp + give >= requiredXp) {
                                 data.xp = 0;
                                 data.level += 1
                                 data.save()
-                                message.channel.send(`XP Booster | ${message.author}, You have leveled up to **Level ${data.level}**`)
+                                message.channel.send({embeds: [xpBoosterEmbed]})
                             } else {
                                 data.xp += give;
                                 data.save();
@@ -182,11 +193,16 @@ module.exports = (client) => {
                             });
         
                             const requiredXp = data.level * 500 + 100
+                            const xpWeekendEmbed = new MessageEmbed()
+                            .setTitle('Level Up')
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setColor('RANDOM')
+                            .setFooter({text: `Weekend XP booster`})
                             if (data.xp + give >= requiredXp) {
                                 data.xp = 0;
                                 data.level += 1
                                 data.save()
-                                message.channel.send(`${message.author}, You have leveled up to **Level ${data.level}** (Since its the weekend you get double xp. You are also more likely to get some)`)
+                                message.channel.send({embeds: [xpWeekendEmbed]})
                             } else {
                                 data.xp += give;
                                 data.save();
@@ -214,11 +230,15 @@ module.exports = (client) => {
                             });
         
                             const requiredXp = data.level * 500 + 100
+                            const xpEmbed = new MessageEmbed()
+                            .setTitle('Level Up')
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setColor('RANDOM')
                             if (data.xp + give >= requiredXp) {
                                 data.xp = 0;
                                 data.level += 1
                                 data.save()
-                                message.channel.send(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                                message.channel.send({embeds: [xpEmbed]})
                             } else {
                                 data.xp += give;
                                 data.save();
