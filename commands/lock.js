@@ -5,7 +5,7 @@ module.exports = {
     description: 'Locks/unlocks a voice or text channel for the @everyone role.',
     category: 'Moderation',
 
-    permissions: ['MANAGE_CHANNELS'],
+    permissions: ['MANAGE_MESSAGES'],
     slash: true,
     guildOnly: true,
 

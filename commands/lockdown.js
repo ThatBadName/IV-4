@@ -5,7 +5,7 @@ module.exports = {
     description: 'Locks the whole server for the @everyone role',
     category: 'Moderation',
 
-    permissions: ['MANAGE_CHANNELS'],
+    permissions: ['MANAGE_ROLES'],
     slash: true,
     guildOnly: true,
 
