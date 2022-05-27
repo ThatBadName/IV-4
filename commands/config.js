@@ -56,6 +56,20 @@ module.exports = {
             ],
         },
         {
+            name: 'suggestion-channel',
+            description: 'The channel where all server suggestions will be sent',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'channel',
+                    description: 'The channel to send suggestions to',
+                    type: 'CHANNEL',
+                    channelTypes: ['GUILD_TEXT'],
+                    required: true
+                }
+            ],
+        },
+        {
             name: 'moderation-code',
             description: 'Set the code required to take a moderation action',
             type: 'SUB_COMMAND',
@@ -295,6 +309,7 @@ module.exports = {
                 {name: 'Server Appeal Form', value: `${doc.guildAppeal || 'None'}`},
                 {name: 'Welcome Channel', value: `${doc2.wcId ? `<#${doc2.wcId}>` : 'None'}`, inline: true},
                 {name: 'Welcome Role', value: `${doc2.wrId ? `<@&${doc2.wrId}>` : 'None'}`, inline: true},
+                {name: 'Suggestions Channel', value: `${doc.suggestionChannelId ? `${doc.suggestionChannelId}` : 'None'}`, inline: true},
                 {name: 'Welcome Message', value: `${doc2.message ? `${doc2.message}` : 'None'}`, inline: false},
             )
 
@@ -311,6 +326,21 @@ module.exports = {
             }
             interaction.reply({
                 content: `Rank card set to: ${interaction.options.getBoolean('enabled')}`,
+                ephemeral: true,
+            })
+        }
+        else if (interaction.options.getSubcommand() === 'suggestion-channel') {
+            const channel = interaction.options.getChannel('channel')
+            const doc = await setupSchema.findOneAndUpdate({
+                guildId: interaction.guild.id
+            }, {
+                suggestionChannelId: channel.id
+            })
+            if(!doc) {
+                await setupSchema.create({guildId: interaction.guild.id})
+            }
+            interaction.reply({
+                content: `Suggestions will be sent to ${channel}`,
                 ephemeral: true,
             })
         }

@@ -987,7 +987,16 @@ module.exports = {
             if(!interaction.member.permissions.has('MANAGE_NICKNAMES')) return `You do not have permission to use this`
             const member = interaction.options.getMember('user')
 
-            member.setNickname(`User ${member.id}`)
+            let password = [];
+            let possible ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+            let passString
+            let passWordLength = 7
+            for (let i = 0; i < passWordLength; i++) {
+                password.push(possible.charAt(Math.floor(Math.random() * possible.length)));
+            }
+            passString = password.join('') 
+
+            member.setNickname(`Moderated Nickname ${passString}`)
             interaction.reply({
                 content: `Successfully changed ${member}'s name`,
                 ephemeral: true,

@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-module.exports = model("Poll", new Schema({
+module.exports = model("Suggestion", new Schema({
     guildId: String,
     channelId: String,
     messageId: String,
@@ -10,7 +10,4 @@ module.exports = model("Poll", new Schema({
     title: String,
     button1: Number,
     button2: Number,
-    button3: Number,
-    button4: Number,
-    button5: Number
 }));

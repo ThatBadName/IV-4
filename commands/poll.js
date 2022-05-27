@@ -1,4 +1,4 @@
-const { CommandInteraction, MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { CommandInteraction, MessageEmbed, MessageActionRow, MessageButton, InteractionWebhook } = require("discord.js");
 const DB = require('../models/poll-schema');
 
 module.exports = {
@@ -63,6 +63,19 @@ module.exports = {
                 }
             ]
         },
+        {
+            name: "end",
+            description: "End a poll",
+            type: "SUB_COMMAND",
+            options: [
+                {
+                    name: "message_id",
+                    description: "Provide the messageID of the poll",
+                    type: "STRING",
+                    required: true
+                }
+            ]
+        }
     ],
        callback: async({interaction, user, channel, guild}) => {
         const blacklistSchema = require('../models/blacklist-schema')
@@ -91,47 +104,52 @@ module.exports = {
                 const Row = new MessageActionRow()
                     .addComponents(
                         new MessageButton()
-                            .setCustomId("poll-1")
+                            .setCustomId("1️⃣")
                             .setStyle("SECONDARY")
-                            .setLabel("1️⃣"),
+                            .setLabel('0')
+                            .setEmoji("1️⃣"),
                         new MessageButton()
-                            .setCustomId("poll-2")
+                            .setCustomId("2️⃣")
                             .setStyle("SECONDARY")
-                            .setLabel("2️⃣")
+                            .setLabel('0')
+                            .setEmoji("2️⃣")
                     )
 
                 if (Choice3) {
                     Choices.push(`3️⃣ ${Choice3}`);
                     Row.addComponents(
                         new MessageButton()
-                            .setCustomId("poll-3")
+                            .setCustomId("3️⃣")
                             .setStyle("SECONDARY")
-                            .setLabel("3️⃣")
+                            .setLabel('0')
+                            .setEmoji("3️⃣")
                     )
                 }
                 if (Choice4) {
                     Choices.push(`4️⃣ ${Choice4}`);
                     Row.addComponents(
                         new MessageButton()
-                            .setCustomId("poll-4")
+                            .setCustomId("4️⃣")
                             .setStyle("SECONDARY")
-                            .setLabel("4️⃣")
+                            .setLabel('0')
+                            .setEmoji("4️⃣")
                     )
                 }
                 if (Choice5) {
                     Choices.push(`5️⃣ ${Choice5}`);
                     Row.addComponents(
                         new MessageButton()
-                            .setCustomId("poll-5")
+                            .setCustomId("5️⃣")
                             .setStyle("SECONDARY")
-                            .setLabel("5️⃣")
+                            .setLabel('0')
+                            .setEmoji("5️⃣")
                     )
                 }
 
                 const Embed = new MessageEmbed()
                     .setTitle(`${Title}`)
                     .setFooter({text: `Poll by ${user.tag}`})
-                    .setColor("NOT_QUITE_BLACK")
+                    .setColor('GREEN')
                     .setTimestamp()
                     .setDescription(Choices.join("\n\n"));
 
@@ -139,23 +157,24 @@ module.exports = {
                     .setColor("RED").setTitle('Error');
 
                 try {
-                    const M = await interaction.reply({embeds: [Embed], components: [Row], fetchReply: true});
+                    const M = await interaction.channel.send({embeds: [Embed], components: [Row]});
+                    interaction.reply({content: 'Started poll', ephemeral: true})
                     await DB.create({
-                        GuildID: guild.id,
-                        ChannelID: interaction.channel.id,
-                        MessageID: M.id,
-                        CreatedBy: user.id,
-                        Title: Title,
-                        Button1: 0,
-                        Button2: 0,
-                        Button3: Choice3 ? 0 : null,
-                        Button4: Choice4 ? 0 : null,
-                        Button5: Choice5 ? 0 : null,
+                        guildId: guild.id,
+                        channelId: interaction.channel.id,
+                        messageId: M.id,
+                        //createdBy: user.id,
+                        title: Title,
+                        button1: 0,
+                        button2: 0,
+                        button3: Choice3 ? 0 : null,
+                        button4: Choice4 ? 0 : null,
+                        button5: Choice5 ? 0 : null,
                     });
                 } catch (err) {
                     ErrorEmbed
                         .setDescription(`There was an error while trying to create a poll`);
-                    interaction.reply({embeds: [Embed], ephemeral: true});
+                    interaction.reply({embeds: [Embed], ephemeral: true})
                     console.log(err);
                 }
             }
@@ -163,7 +182,7 @@ module.exports = {
 
             case "results": {
                 const MessageID = interaction.options.getString("message_id");
-                const Data = await DB.findOne({ GuildID: guild.id, MessageID: MessageID });
+                const Data = await DB.findOne({ guildID: guild.id, messageId: MessageID });
                 const Embed = new MessageEmbed()
                 if (!Data) {
                     Embed
@@ -174,19 +193,53 @@ module.exports = {
                 }
                 Embed
                     .setColor("NOT_QUITE_BLACK")
-                    .setAuthor({name: `${Data.Title}`})
+                    .setAuthor({name: `${Data.title}`})
                     .setFooter({text: `MessageID: ${MessageID}`})
                     .setTimestamp();
                 
-                let ButtonSize = [`1️⃣ - \`${Data.Button1}\` Votes`, `2️⃣ - \`${Data.Button2}\` Votes`];
-                if (Data.Button3 !== null) ButtonSize.push(`3️⃣ - \`${Data.Button3}\` Votes`);
-                if (Data.Button4 !== null) ButtonSize.push(`4️⃣ - \`${Data.Button4}\` Votes`);
-                if (Data.Button5 !== null) ButtonSize.push(`5️⃣ - \`${Data.Button5}\` Votes`);
+                let ButtonSize = [`1️⃣ - \`${Data.button1}\` Votes`, `2️⃣ - \`${Data.button2}\` Votes`];
+                if (Data.button3 !== null) ButtonSize.push(`3️⃣ - \`${Data.button3}\` Votes`);
+                if (Data.button4 !== null) ButtonSize.push(`4️⃣ - \`${Data.button4}\` Votes`);
+                if (Data.button5 !== null) ButtonSize.push(`5️⃣ - \`${Data.button5}\` Votes`);
 
                 Embed.setDescription(ButtonSize.join("\n\n"));
                 interaction.reply({embeds: [Embed]});
             }
             break;
+
+            case "end": {
+                const MessageID = interaction.options.getString("message_id");
+                const Data = await DB.findOne({ guildID: guild.id, messageId: MessageID });
+                const Embed = new MessageEmbed()
+                if (!Data) {
+                    Embed
+                        .setColor("RED")
+                        .setTitle('Error')
+                        .setDescription(`Could not find any poll with that messageID`);
+                    return interaction.reply({embeds: [Embed], ephemeral: true});
+                }
+                Embed
+                    .setAuthor({name: `${Data.title}`})
+                    .setColor('RED')
+                    .setFooter({text: `MessageID: ${MessageID} | Ended the poll`})
+                    .setTimestamp();
+                
+                let ButtonSize = [`1️⃣ - \`${Data.button1}\` Votes`, `2️⃣ - \`${Data.button2}\` Votes`];
+                if (Data.button3 !== null) ButtonSize.push(`3️⃣ - \`${Data.button3}\` Votes`);
+                if (Data.button4 !== null) ButtonSize.push(`4️⃣ - \`${Data.button4}\` Votes`);
+                if (Data.button5 !== null) ButtonSize.push(`5️⃣ - \`${Data.button5}\` Votes`);
+
+                Embed.setDescription(ButtonSize.join("\n\n"));
+                interaction.reply({content: 'Poll ended', ephemeral: true});
+                Data.delete()
+                const msg = await interaction.guild.channels.cache.get(interaction.channel.id).messages.fetch(MessageID)
+                if (!msg) {
+                    interaction.reply({content: 'I could not find a message in this channel with that ID. Please make sure the ID is correct or that you are running the command in the same channel as the poll', ephemeral: true})
+                    return
+                }
+                msg.edit({embeds: [Embed], components: []})
+            }
+            break
         }
     },
 };

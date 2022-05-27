@@ -1,6 +1,7 @@
 const maintenanceSchema = require('../models/mantenance-schema')
 const blacklistSchema = require('../models/blacklist-schema')
 const pollSchema = require('../models/poll-schema')
+const { MessageEmbed } = require('discord.js')
 
 module.exports = (client) => {
     client.on("interactionCreate", async (interaction, message) => {
@@ -16,51 +17,152 @@ module.exports = (client) => {
                 return
             }
 
-            if (interaction.customId === 'poll-1') {
-                const data = await pollSchema.findOne({ GuildID: interaction.guild.id, MessageID: interaction.message.id })
+            const sendPoll = new MessageEmbed()
+            .setTitle('Answer Sent!')
+            .setColor('DARK_GREEN')
+
+            const alreadyChosen = new MessageEmbed()
+            .setTitle('You have already voted!')
+            .setColor('DARK_RED')
+
+            if (interaction.customId === '1️⃣') {
+                const data = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
                 if (!data) return;
 
-                if (data.Users.includes(interaction.user.id)) return interaction.reply({content: `You have already chosen your answer`, ephemeral: true});
+                if (data.users.includes(interaction.user.id)) return interaction.reply({embeds: [alreadyChosen], ephemeral: true});
 
-                await pollSchema.findOneAndUpdate({ GuildID: interaction.guild.id, MessageID: interaction.message.id}, {Button1: data.Button1 + 1, $push: { Users: interaction.user.id }});
+                const poll = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
+                if(!poll) return
 
-                interaction.reply({content: `Your answer has been sent`, ephemeral: true});
-            } else if (interaction.customId === 'poll-2') {
-                const data = await pollSchema.findOne({ GuildID: interaction.guild.id, MessageID: interaction.message.id })
+                poll.votes = poll.votes || {}
+
+                if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
+                else poll.votes[interaction.customId] = 1
+
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button1 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+
+                interaction.reply({embeds: [sendPoll], ephemeral: true});
+                const m = interaction.message
+                m.edit({
+                    components: m.components.map(row => {
+                        row.components = row.components?.map(v => {
+                            v.emoji == v.customId
+                            v.label = `${poll.votes[v.customId] || 0}`;
+                            return v;
+                        });
+                        return row;
+                    })
+                })
+            } else if (interaction.customId === '2️⃣') {
+                const data = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
                 if (!data) return;
 
-                if (data.Users.includes(interaction.user.id)) return interaction.reply({content: `You have already chosen your answer`, ephemeral: true});
+                if (data.users.includes(interaction.user.id)) return interaction.reply({embeds: [alreadyChosen], ephemeral: true});
+                const poll = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
+                if(!poll) return
 
-                await pollSchema.findOneAndUpdate({ GuildID: interaction.guild.id, MessageID: interaction.message.id}, {Button2: data.Button2 + 1, $push: { Users: interaction.user.id }});
+                poll.votes = poll.votes || {}
 
-                interaction.reply({content: `Your answer has been sent`, ephemeral: true});
-            } else if (interaction.customId === 'poll-3') {
-                const data = await pollSchema.findOne({ GuildID: interaction.guild.id, MessageID: interaction.message.id })
+                if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
+                else poll.votes[interaction.customId] = 1
+
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button2 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+
+                interaction.reply({embeds: [sendPoll], ephemeral: true});
+                const m = interaction.message
+                m.edit({
+                    components: m.components.map(row => {
+                        row.components = row.components?.map(v => {
+                            v.emoji == v.customId
+                            v.label = `${poll.votes[v.customId] || 0}`;
+                            return v;
+                        });
+                        return row;
+                    })
+                })
+            } else if (interaction.customId === '3️⃣') {
+                const data = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
                 if (!data) return;
 
-                if (data.Users.includes(interaction.user.id)) return interaction.reply({content: `You have already chosen your answer`, ephemeral: true});
+                if (data.users.includes(interaction.user.id)) return interaction.reply({embeds: [alreadyChosen], ephemeral: true});
+                const poll = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
+                if(!poll) return
 
-                await pollSchema.findOneAndUpdate({ GuildID: interaction.guild.id, MessageID: interaction.message.id}, {Button3: data.Button3 + 1, $push: { Users: interaction.user.id }});
+                poll.votes = poll.votes || {}
 
-                interaction.reply({content: `Your answer has been sent`, ephemeral: true});
-            } else if (interaction.customId === 'poll-4') {
-                const data = await pollSchema.findOne({ GuildID: interaction.guild.id, MessageID: interaction.message.id })
+                if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
+                else poll.votes[interaction.customId] = 1
+
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button3 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+
+                interaction.reply({embeds: [sendPoll], ephemeral: true});
+                const m = interaction.message
+                m.edit({
+                    components: m.components.map(row => {
+                        row.components = row.components?.map(v => {
+                            v.emoji == v.customId
+                            v.label = `${poll.votes[v.customId] || 0}`;
+                            return v;
+                        });
+                        return row;
+                    })
+                })
+            } else if (interaction.customId === '4️⃣') {
+                const data = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
                 if (!data) return;
 
-                if (data.Users.includes(interaction.user.id)) return interaction.reply({content: `You have already chosen your answer`, ephemeral: true});
+                if (data.users.includes(interaction.user.id)) return interaction.reply({embeds: [alreadyChosen], ephemeral: true});
 
-                await pollSchema.findOneAndUpdate({ GuildID: interaction.guild.id, MessageID: interaction.message.id}, {Button4: data.Button4 + 1, $push: { Users: interaction.user.id }});
+                const poll = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
+                if(!poll) return
 
-                interaction.reply({content: `Your answer has been sent`, ephemeral: true});
-            } else if (interaction.customId === 'poll-5') {
-                const data = await pollSchema.findOne({ GuildID: interaction.guild.id, MessageID: interaction.message.id })
+                poll.votes = poll.votes || {}
+
+                if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
+                else poll.votes[interaction.customId] = 1
+
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button4 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+
+                interaction.reply({embeds: [sendPoll], ephemeral: true});
+                const m = interaction.message
+                m.edit({
+                    components: m.components.map(row => {
+                        row.components = row.components?.map(v => {
+                            v.emoji == v.customId
+                            v.label = `${poll.votes[v.customId] || 0}`;
+                            return v;
+                        });
+                        return row;
+                    })
+                })
+            } else if (interaction.customId === '5️⃣') {
+                const data = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
                 if (!data) return;
 
-                if (data.Users.includes(interaction.user.id)) return interaction.reply({content: `You have already chosen your answer`, ephemeral: true});
+                if (data.users.includes(interaction.user.id)) return interaction.reply({embeds: [alreadyChosen], ephemeral: true});
 
-                await pollSchema.findOneAndUpdate({ GuildID: interaction.guild.id, MessageID: interaction.message.id}, {Button5: data.Button5 + 1, $push: { Users: interaction.user.id }});
+                const poll = await pollSchema.findOne({ guildId: interaction.guild.id, messageId: interaction.message.id })
+                if(!poll) return
 
-                interaction.reply({content: `Your answer has been sent`, ephemeral: true});
+                poll.votes = poll.votes || {}
+
+                if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
+                else poll.votes[interaction.customId] = 1
+
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button5 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+
+                interaction.reply({embeds: [sendPoll], ephemeral: true});
+                const m = interaction.message
+                m.edit({
+                    components: m.components.map(row => {
+                        row.components = row.components?.map(v => {
+                            v.emoji == v.customId
+                            v.label = `${poll.votes[v.customId] || 0}`;
+                            return v;
+                        });
+                        return row;
+                    })
+                })
             }
         }
         })

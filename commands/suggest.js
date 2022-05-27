@@ -1,4 +1,5 @@
 const { CommandInteraction, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
+const suggestionSchema = require('../models/suggestion-schema')
 const setupSchema = require('../models/setup-schema')
 
 module.exports = {
@@ -47,9 +48,15 @@ module.exports = {
             if (maintenance && interaction.user.id !== '804265795835265034') {
                 return
             }
+
+            const result = await setupSchema.findOne({guildId: interaction.guild.id})
+            if (!result) {
+                setupSchema.create({guildId: interaction.guild.id})
+                return `No config data. Please run this command again`
+            }
         
-        const channel = guild.channels.cache.find(channel => channel.name === 'suggestions')
-        if (!channel) return ('I could not find a suggestion channel. Please create one called "suggestions"')
+        const channel = guild.channels.cache.find(channel => channel.id === result.suggestionChannelId)
+        if (!channel) return ('I could not find a suggestion channel. Please set one with `/config suggestion-channel <channel>`')
 
         const type = interaction.options.getString('type')
         const sug = interaction.options.getString('suggestion')
@@ -59,9 +66,23 @@ module.exports = {
         .setTitle(interaction.user.tag)
         .addField("Type", `${type}`)
         .addField("Suggestion", `${sug}`, true)
-        const message = await channel.send({embeds: [embed], fetchReply: true});
-            message.react("🟢")
-            message.react("🔴")
+
+        const Row = new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setCustomId("🟢")
+                            .setStyle("SECONDARY")
+                            .setLabel('0')
+                            .setEmoji("🟢"),
+                        new MessageButton()
+                            .setCustomId("🔴")
+                            .setStyle("SECONDARY")
+                            .setLabel('0')
+                            .setEmoji("🔴")
+                    )
+
+
+        const message = await channel.send({embeds: [embed], components: [Row]});
             const thread = await message.startThread({
                 name: `${interaction.user.tag}'s suggestion chat`,
                 autoArchiveDuration: 60,
@@ -69,6 +90,15 @@ module.exports = {
             });
             thread.send(`Discuss this suggestion`)
         interaction.reply({custom: true, content: 'Sent your suggestion', ephemeral: true})
+
+        suggestionSchema.create({
+            guildId: interaction.guild.id,
+            channelId: channel.id,
+            messageId: message.id,
+            title: sug,
+            button1: 0,
+            button2: 0
+        })
             
     }
 }

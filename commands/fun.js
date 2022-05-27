@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
-const Memer = require('random-jokes-api')
+const got = require('got')
 const Minesweeper = require('discord.js-minesweeper')
 
 module.exports = {
@@ -18,8 +18,13 @@ options: [
         type: 'SUB_COMMAND'
     },
     {
-        name: 'joke',
-        description: 'Get a joke',
+        name: 'showerthought',
+        description: 'Get a shower thought',
+        type: 'SUB_COMMAND'
+    },
+    {
+        name: 'tdtm',
+        description: 'They Did The Maths',
         type: 'SUB_COMMAND'
     },
     {
@@ -66,13 +71,28 @@ callback: async({interaction}) => {
         }
 
     if (interaction.options.getSubcommand() === 'meme') {
-        let meme = Memer.meme()
+        const embed = new MessageEmbed();
+        got('https://www.reddit.com/r/memes/random/.json')
+            .then(response => {
+                const [list] = JSON.parse(response.body);
+                const [post] = list.data.children;
 
-        const memeEmbed = new MessageEmbed()
-        .setTitle(meme.title)
-        .setImage(meme.url)
-        .setFooter({text: `Category: ${meme.category}`})
-        .setColor('RANDOM')
+                const permalink = post.data.permalink;
+                const memeUrl = `https://reddit.com${permalink}`;
+                const memeImage = post.data.url;
+                const memeTitle = post.data.title;
+                const memeUpvotes = post.data.ups;
+                const memeNumComments = post.data.num_comments;
+
+                embed.setTitle(`${memeTitle}`);
+                embed.setURL(`${memeUrl}`);
+                embed.setColor('RANDOM');
+                embed.setImage(memeImage);
+                embed.setFooter({text: `👍 ${memeUpvotes} 💬 ${memeNumComments}`});
+
+                interaction.reply({embeds: [embed], components: [row]})
+            })
+            .catch(console.error);
 
         const row = new MessageActionRow()
         .addComponents(
@@ -82,23 +102,7 @@ callback: async({interaction}) => {
             .setStyle('SUCCESS')
         )
         
-        interaction.reply({embeds: [memeEmbed], components: [row]})
-    } else if (interaction.options.getSubcommand() === 'joke') {
-        let jokes = Memer.joke()
-
-        const jokeEmbed = new MessageEmbed()
-        .setDescription(`${jokes}`)
-        .setColor('RANDOM')
-
-        const row = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-            .setLabel('New Joke')
-            .setCustomId('newJoke')
-            .setStyle('SUCCESS')
-        )
-
-        interaction.reply({embeds: [jokeEmbed], components: [row]})
+        interaction.reply({embeds: [memeEmbed], components: [row]}) 
     } else if (interaction.options.getSubcommand() === 'minesweeper') {
         let rows = interaction.options.getInteger('rows') || 9
         let columns = interaction.options.getInteger('columns') || 9
@@ -111,6 +115,68 @@ callback: async({interaction}) => {
         const matrix = game.start()
 
         interaction.reply({content: `${matrix ? matrix.replaceAll(' ', '') : 'Invalid data'}`})
+    } else if (interaction.options.getSubcommand() === 'showerthought') {
+        const embed = new MessageEmbed();
+        got('https://www.reddit.com/r/showerthoughts/random/.json')
+            .then(response => {
+                const [list] = JSON.parse(response.body);
+                const [post] = list.data.children;
+
+                const permalink = post.data.permalink;
+                const memeUrl = `https://reddit.com${permalink}`;
+                const memeImage = post.data.url;
+                const memeTitle = post.data.title.slice(256)
+                const memeUpvotes = post.data.ups;
+                const memeNumComments = post.data.num_comments;
+
+                embed.setTitle(`${memeTitle}`);
+                embed.setURL(`${memeUrl}`);
+                embed.setColor('RANDOM');
+                embed.setImage(memeImage);
+                embed.setFooter({text: `👍 ${memeUpvotes} 💬 ${memeNumComments}`});
+
+                interaction.reply({embeds: [embed], components: [row]})
+            })
+            .catch(console.error);
+
+        const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setLabel('New Thought')
+            .setCustomId('newThought')
+            .setStyle('SUCCESS')
+        )   
+    } else if (interaction.options.getSubcommand() === 'tdtm') {
+        const embed = new MessageEmbed();
+        got('https://www.reddit.com/r/theydidthemath/random/.json')
+            .then(response => {
+                const [list] = JSON.parse(response.body);
+                const [post] = list.data.children;
+
+                const permalink = post.data.permalink;
+                const memeUrl = `https://reddit.com${permalink}`;
+                const memeImage = post.data.url;
+                const memeTitle = post.data.title.slice(256)
+                const memeUpvotes = post.data.ups;
+                const memeNumComments = post.data.num_comments;
+
+                embed.setTitle(`${memeTitle}`);
+                embed.setURL(`${memeUrl}`);
+                embed.setColor('RANDOM');
+                embed.setImage(memeImage);
+                embed.setFooter({text: `👍 ${memeUpvotes} 💬 ${memeNumComments}`});
+
+                interaction.reply({embeds: [embed], components: [row]})
+            })
+            .catch(console.error);
+
+        const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setLabel('New TDTM')
+            .setCustomId('newTdtm')
+            .setStyle('SUCCESS')
+        )   
     }
-}
+    }
 }
