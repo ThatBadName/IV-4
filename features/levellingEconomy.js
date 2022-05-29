@@ -24,7 +24,7 @@ module.exports = (client) => {
     if(message.author.bot) return;
     if (message.content.startsWith('<@919242400738730005>')) {
         const pingEmbed = new MessageEmbed()
-        .setTitle(`I'm IV-5`)
+        .setTitle(`I'm IV-4`)
         .setDescription('If you need any help with the bot please join the [Support Server](https://discord.gg/ArpuxMEa55) or read the [Docs](https://thatbadname.gitbook.io/iv-5-docs/)')
         .setFields({
             name: 'Where are my commands?',
@@ -115,7 +115,7 @@ module.exports = (client) => {
                             const requiredXp = data.level * 500 + 100
                             const xpBoosterWeekendEmbed = new MessageEmbed()
                             .setTitle('Level Up')
-                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)
                             .setColor('RANDOM')
                             .setFooter({text: `Booster | Weekend XP booster`})
 
@@ -154,7 +154,7 @@ module.exports = (client) => {
                             const requiredXp = data.level * 500 + 100
                             const xpBoosterEmbed = new MessageEmbed()
                             .setTitle('Level Up')
-                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)
                             .setColor('RANDOM')
                             .setFooter({text: `Booster`})
                             if (data.xp + give >= requiredXp) {
@@ -195,7 +195,7 @@ module.exports = (client) => {
                             const requiredXp = data.level * 500 + 100
                             const xpWeekendEmbed = new MessageEmbed()
                             .setTitle('Level Up')
-                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)
                             .setColor('RANDOM')
                             .setFooter({text: `Weekend XP booster`})
                             if (data.xp + give >= requiredXp) {
@@ -232,7 +232,7 @@ module.exports = (client) => {
                             const requiredXp = data.level * 500 + 100
                             const xpEmbed = new MessageEmbed()
                             .setTitle('Level Up')
-                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level}**`)
+                            .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)
                             .setColor('RANDOM')
                             if (data.xp + give >= requiredXp) {
                                 data.xp = 0;

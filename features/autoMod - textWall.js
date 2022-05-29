@@ -1,9 +1,11 @@
 const { MessageEmbed } = require('discord.js')
 const historySchema = require('../models/history-schema')
-const strikeSchema = require('../models/strike-schema') 
+const strikeSchema = require('../models/strike-schema')
+const setupSchema = require('../models/setup-schema')
 
 module.exports = (client) => {
-    client.on('', async (message) => {
+    client.on('messageCreate', async (message) => {
+        const maintenanceSchema = require('../models/mantenance-schema')
         const maintenance = await maintenanceSchema.findOne({maintenance: true})
             if (maintenance && message.author.id !== '804265795835265034') {
                 return
@@ -15,6 +17,7 @@ module.exports = (client) => {
     if(message.author.bot) return;
     if(message.channel.name === 'spam') return;
     if(message.member.permissions.has("ADMINISTRATOR")) return
+    if(message.channel.id === database.advertisingChannelId) return
 
         if (message.content.length > 300) {
         message.channel.send(`${message.author} You have been muted for sending very long messages`)

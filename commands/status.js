@@ -69,6 +69,7 @@ module.exports = {
 
     slash: true,
     ownerOnly: true,
+    testOnly: true,
 
     callback: async ({ client, interaction, guild }) => {
         const blacklistSchema = require('../models/blacklist-schema')

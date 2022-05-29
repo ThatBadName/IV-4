@@ -39,9 +39,11 @@ module.exports = {
             const userID = interaction.options.getString('userid')
             historySchema.collection.deleteMany({userId: userID})
             strikeSchema.collection.deleteMany({userId: userID})
+            historySchema.collection.deleteMany({guildId: userID})
+            strikeSchema.collection.deleteMany({guildId: userID})
 
 
-            i.reply({content: `<@${userID}> has been wiped`})
+            i.reply({content: `${userID} has been wiped`})
             })
     
             collector.on('end', async (collection) => {

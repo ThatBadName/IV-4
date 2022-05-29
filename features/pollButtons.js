@@ -66,7 +66,7 @@ module.exports = (client) => {
                 if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
                 else poll.votes[interaction.customId] = 1
 
-                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button2 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button2: data.button2 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
 
                 interaction.reply({embeds: [sendPoll], ephemeral: true});
                 const m = interaction.message
@@ -93,7 +93,7 @@ module.exports = (client) => {
                 if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
                 else poll.votes[interaction.customId] = 1
 
-                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button3 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button3: data.button3 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
 
                 interaction.reply({embeds: [sendPoll], ephemeral: true});
                 const m = interaction.message
@@ -121,7 +121,7 @@ module.exports = (client) => {
                 if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
                 else poll.votes[interaction.customId] = 1
 
-                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button4 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button4: data.button4 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
 
                 interaction.reply({embeds: [sendPoll], ephemeral: true});
                 const m = interaction.message
@@ -149,7 +149,7 @@ module.exports = (client) => {
                 if(poll.votes[interaction.customId]) poll.votes[interaction.customId] += 1
                 else poll.votes[interaction.customId] = 1
 
-                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button1: data.button5 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
+                await pollSchema.findOneAndUpdate({ guildId: interaction.guild.id, messageId: interaction.message.id}, {button5: data.button5 + 1, $push: { users: interaction.user.id }, votes: poll.votes});
 
                 interaction.reply({embeds: [sendPoll], ephemeral: true});
                 const m = interaction.message

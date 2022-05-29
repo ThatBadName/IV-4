@@ -5,6 +5,11 @@ const strikeSchema = require('../models/strike-schema')
 
 module.exports = (client) => {
     client.on('messageCreate', async (message) => {
+        const maintenanceSchema = require('../models/mantenance-schema')
+        const maintenance = await maintenanceSchema.findOne({maintenance: true})
+            if (maintenance && message.author.id !== '804265795835265034') {
+                return
+            }
         if(message.author.bot) return;
         if(message.channel.type === 'DM') return;
         if(message.member.permissions.has("ADMINISTRATOR")) return

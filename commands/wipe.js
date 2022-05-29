@@ -39,9 +39,11 @@ module.exports = {
             const userID = interaction.options.getString('userid')
             balanceSchema.collection.deleteMany({userId: userID})
             levelSchema.collection.deleteMany({userId: userID})
+            balanceSchema.collection.deleteMany({guildId: userID})
+            levelSchema.collection.deleteMany({guildId: userID})
 
 
-            i.reply({content: `<@${userID}> has been wiped`})
+            i.reply({content: `${userID} has been wiped`})
             })
     
             collector.on('end', async (collection) => {

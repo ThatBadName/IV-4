@@ -44,9 +44,13 @@ module.exports = {
             levelSchema.collection.deleteMany({userId: userID})
             historySchema.collection.deleteMany({userId: userID})
             strikeSchema.collection.deleteMany({userId: userID})
+            historySchema.collection.deleteMany({guildId: userID})
+            strikeSchema.collection.deleteMany({guildId: userID})
+            balanceSchema.collection.deleteMany({guildId: userID})
+            levelSchema.collection.deleteMany({guildId: userID})
 
 
-            i.reply({content: `<@${userID}> has been wiped`})
+            i.reply({content: `${userID} has been wiped`})
             })
     
             collector.on('end', async (collection) => {

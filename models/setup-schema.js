@@ -15,9 +15,9 @@ const schema = new Schema({
     guildInvite: String,
     guildAppeal: String,
     rankCard: Boolean,
-    adminRoleId: String,
-    modRoleId: String,
-    suggestionChannelId: String
+    suggestionChannelId: String,
+    logChannelId: String,
+    advertisingChannelId: String,
 })
 
 const name = 'setupSchema'

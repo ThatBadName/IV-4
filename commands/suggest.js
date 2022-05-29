@@ -159,9 +159,11 @@ module.exports = {
                 button2: 0
             })
         } else if (interaction.options.getSubcommand() === 'manage') {
+            if(!interaction.member.permissions.has('MANAGE_MESSAGES')) return `You do not have permission to use this`
+            const setup = await setupSchema.findOne({guildId: interaction.guild.id})
             const messageId = interaction.options.getString('message_id')
             const data = await suggestionSchema.findOne({messageId: messageId, guildId: interaction.guild.id})
-            const msg = await interaction.guild.channels.cache.get(interaction.channel.id).messages.fetch(messageId)
+            const msg = await interaction.guild.channels.cache.get(setup.suggestionChannelId).messages.fetch(messageId)
             const embed = msg.embeds[0]
             const reason = interaction.options.getString('reason') || 'No reason provided'
 

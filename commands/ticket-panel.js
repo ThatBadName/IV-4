@@ -31,7 +31,7 @@ module.exports = {
         const channel = interaction.options.getChannel('channel')
 
         const embed = new MessageEmbed()
-            .setColor('BLUE')
+            .setColor('0xFF3D15')
             .setTitle('Open a ticket')
             .setDescription(
                 "__**How to make a ticket**__\n" +

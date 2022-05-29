@@ -33,21 +33,21 @@ module.exports = {
                     type: "STRING",
                     required: true
                 },
-                {
-                    name: "choice3",
-                    description: "What is the third choice for the poll",
-                    type: "STRING"
-                },
-                {
-                    name: "choice4",
-                    description: "What is the fourth choice for the poll",
-                    type: "STRING"
-                },
-                {
-                    name: "choice5",
-                    description: "What is the fifth choice for the poll",
-                    type: "STRING"
-                }
+                // {
+                //     name: "choice3",
+                //     description: "What is the third choice for the poll",
+                //     type: "STRING"
+                // },
+                // {
+                //     name: "choice4",
+                //     description: "What is the fourth choice for the poll",
+                //     type: "STRING"
+                // },
+                // {
+                //     name: "choice5",
+                //     description: "What is the fifth choice for the poll",
+                //     type: "STRING"
+                // }
             ]
         },
         {

@@ -5,7 +5,7 @@ const welcomeSchema = require('../models/welcome-schema')
 
 module.exports = {
     name: 'config',
-    description: 'Setup the bot.',
+    description: 'Configure the bot.',
     category: 'Config',
     slash: true,
     permissions: ['ADMINISTRATOR'],
@@ -68,6 +68,34 @@ module.exports = {
                     required: true
                 }
             ],
+        },
+        {
+            name: 'log-channel',
+            description: 'Set the log channel',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'channel',
+                    description: 'The channel',
+                    type: 'CHANNEL',
+                    channelTypes: ['GUILD_TEXT'],
+                    required: true,
+                },
+            ],
+        },
+        {
+            name: 'advertising-channel',
+            description: 'Set the advertising channel for the server (Will allow invites and large walls of text)',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'channel',
+                    description: 'The channel',
+                    type: 'CHANNEL',
+                    channelTypes: ['GUILD_TEXT'],
+                    required: true,
+                },
+            ]
         },
         {
             name: 'moderation-code',
@@ -245,6 +273,27 @@ module.exports = {
                 ephemeral: true,
             })
         }
+        else if (interaction.options.getSubcommand() === 'log-channel') {
+            const channel = interaction.options.getChannel('channel')
+
+            const update = await setupSchema.findOneAndUpdate({guildId: interaction.guild.id}, {logChannelId: channel.id})
+            if (!update) {
+                await setupSchema.create({guildId: interaction.guild.id, logChannelId: channel.id})
+            }
+
+            interaction.reply({content: `Set the log channel to: ${channel}`})
+        }
+
+        else if (interaction.options.getSubcommand() === 'advertising-channel') {
+            const channel = interaction.options.getChannel('channel')
+
+            const update = await setupSchema.findOneAndUpdate({guildId: interaction.guild.id}, {advertisingChannelId: channel.id})
+            if (!update) {
+                await setupSchema.create({guildId: interaction.guild.id, advertisingChannelId: channel.id})
+            }
+
+            interaction.reply({content: `Set the advertising channel to: ${channel}`})
+        }
         else if (interaction.options.getSubcommand() === 'invite-link') {
                 const link = interaction.options.getString('link')
     
@@ -254,7 +303,7 @@ module.exports = {
                     guildInvite: link
                 })
                 if(!update) {
-                    await setupSchema.create({guildId: interaction.guild.id})
+                    await setupSchema.create({guildId: interaction.guild.id, guildInvite: link})
                 }
                 interaction.reply({content: `Set the invite to: ${link}`})
         }
@@ -266,7 +315,7 @@ module.exports = {
                     guildAppeal: link
                 })
                 if(!update) {
-                    await setupSchema.create({guildId: interaction.guild.id})
+                    await setupSchema.create({guildId: interaction.guild.id, guildAppeal: link})
                 }
                 interaction.reply({content: `Set the appeal form to: ${link}`})
         }
@@ -309,7 +358,9 @@ module.exports = {
                 {name: 'Server Appeal Form', value: `${doc.guildAppeal || 'None'}`},
                 {name: 'Welcome Channel', value: `${doc2.wcId ? `<#${doc2.wcId}>` : 'None'}`, inline: true},
                 {name: 'Welcome Role', value: `${doc2.wrId ? `<@&${doc2.wrId}>` : 'None'}`, inline: true},
-                {name: 'Suggestions Channel', value: `${doc.suggestionChannelId ? `${doc.suggestionChannelId}` : 'None'}`, inline: true},
+                {name: 'Suggestions Channel', value: `${doc.suggestionChannelId ? `<#${doc.suggestionChannelId}>` : 'None'}`, inline: true},
+                {name: 'Log Channel', value: `${doc.logChannelId ? `<#${doc.logChannelId}>` : 'None'}`, inline: true},
+                {name: 'Advertising Channel', value: `${doc.advertisingChannelId ? `<#${doc.advertisingChannelId}>` : 'None'}`, inline: true},
                 {name: 'Welcome Message', value: `${doc2.message ? `${doc2.message}` : 'None'}`, inline: false},
             )
 
@@ -337,7 +388,7 @@ module.exports = {
                 suggestionChannelId: channel.id
             })
             if(!doc) {
-                await setupSchema.create({guildId: interaction.guild.id})
+                await setupSchema.create({guildId: interaction.guild.id, suggestionChannelId: channel.id})
             }
             interaction.reply({
                 content: `Suggestions will be sent to ${channel}`,

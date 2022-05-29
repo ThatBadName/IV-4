@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const moment = require('moment')
+const premuimGuildsSchema = require('../models/premiumGuild-schema')
 
 module.exports = {
     name: 'serverinfo',
@@ -21,6 +22,8 @@ module.exports = {
             if (maintenance && interaction.user.id !== '804265795835265034') {
                 return
             }
+
+            const result = await premuimGuildsSchema.findOne({guildId: interaction.guild.id})
         
         const embed = new MessageEmbed()
         .setTitle(guild.name)
@@ -28,7 +31,8 @@ module.exports = {
         .setColor('RANDOM')
         .addField("General Info", `**ID:** ${guild.id}\n**Name:** ${guild.name}\n**Owner:** <@${guild.ownerId}>`)
         .addField("Counts", `**Members:** ${guild.memberCount}\n**Roles:** ${guild.roles.cache.size}\n**Channels:** ${guild.channels.cache.size}\n**Emojis:** ${guild.emojis.cache.size} (${guild.emojis.cache.filter((e) => !e.animated).size} regular, ${guild.emojis.cache.filter((e) => e.animated).size} animated)`)
-        .addField('Extra Info', `**Created:** ${moment(guild.createdTimestamp).format("LT")} ${moment(guild.createdTimestamp).format("LL")} ${moment(guild.createdTimestamp).fromNow()}\n**Boost Tier:** ${guild.premiumTier ? `Tier ${guild.premiumTier}` : "None"}\n**Boost Count:** ${guild.premiumSubscriptionCount || 0}`)
+        .addField('Extra Info', `**Created:** ${moment(guild.createdTimestamp).format("LT")} ${moment(guild.createdTimestamp).format("LL")} ${moment(guild.createdTimestamp).fromNow()}\n**Boost Tier:** ${guild.premiumTier ? `${guild.premiumTier.replace("NONE", "Not boosted")}` : "None"}\n**Boost Count:** ${guild.premiumSubscriptionCount || 0}
+        \n**Premium:**\n${result ? `Premium expires <t:${Math.round(result.expires.getTime() / 1000)}:R>` : `This server does not have premium`}`)
 
         return embed
 

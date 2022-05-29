@@ -4,6 +4,7 @@ const welcomeData = {}
 
 module.exports = (client) => {
    client.on('guildMemberAdd', async member => {
+
        const { guild, id } = member
 
        const results = await welcomeSchema.findOne({guildId: guild.id})
