@@ -1,4 +1,4 @@
-# IV-5
+# IV-4
 
 IF YOU USE ANY OF THIS CODE YOU MUST FOLLOW THE LISENCE
 
@@ -15,3 +15,5 @@ MONGO_URI=<yourMongooseUri>
 4) node index.js to run
 
 If you need any help with the bot please join the support server
+
+*The code for IV-5 will be kept hidden*
