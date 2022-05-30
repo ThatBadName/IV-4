@@ -1,4 +1,4 @@
-const { MessageEmbed, InteractionWebhook } = require('discord.js')
+const { MessageEmbed, InteractionWebhook, MessageActionRow, MessageButton } = require('discord.js')
 const botSchema = require('../models/bot-schema')
 const setupSchema = require('../models/setup-schema')
 const blacklistSchema = require('../models/blacklist-schema')
@@ -29,6 +29,26 @@ module.exports = {
                 totalSeconds %= 3600;
                 let minutes = Math.floor(totalSeconds / 60);
                 let seconds = Math.floor(totalSeconds % 60);
+
+                const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=8&scope=bot%20applications.commands')
+                    .setLabel('Invite Me')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setLabel('Support Server')
+                    .setURL('https://discord.gg/ArpuxMEa55')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://thatbadname.gitbook.io/iv-5-docs/')
+                    .setLabel('Documentation')
+                )
         
                 const embed = new MessageEmbed()
                 .setTitle('Bot Info')
@@ -40,7 +60,7 @@ module.exports = {
                 .addField("Guild Forms", `**Invite:** ${doc.guildInvite || 'None'}\n**Appeal Form:** ${doc.guildAppeal || 'None'}`)
                 .setColor('RANDOM')
                 .setFooter({text: 'You cannot run commands or interact with the bot in any way'})
-                return embed
+                return interaction.reply({embeds: [embed], components: [row]})
             } else {           
         const doc = await setupSchema.findOne({guildId: interaction.guild.id})
         if (!doc) setupSchema.create({guildId: interaction.guild.id})
@@ -55,18 +75,35 @@ module.exports = {
         totalSeconds %= 3600;
         let minutes = Math.floor(totalSeconds / 60);
         let seconds = Math.floor(totalSeconds % 60);
+        const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+            .setStyle('LINK')
+            .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=8&scope=bot%20applications.commands')
+            .setLabel('Invite Me')
+        )
+        .addComponents(
+            new MessageButton()
+            .setStyle('LINK')
+            .setLabel('Support Server')
+            .setURL('https://discord.gg/ArpuxMEa55')
+        )
+        .addComponents(
+            new MessageButton()
+            .setStyle('LINK')
+            .setURL('https://thatbadname.gitbook.io/iv-5-docs/')
+            .setLabel('Documentation')
+        )
 
         const embed = new MessageEmbed()
         .setTitle('Bot Info')
-        .setDescription(`[Docs](https://thatbadname.gitbook.io/iv-5-docs/) | [Support Server](https://discord.gg/ArpuxMEa55)`)
         .addField("Latency:", `\`${String(responseTime)}\`ms`)
         .addField("Ping:", `\`${String(client.ws.ping)}\`ms`)
         .addField("Uptime:", `\`${String(days)}\` days, \`${String(hours)}\` hours, \`${String(minutes)}\` minutes, \`${String(seconds)}\` seconds`)
         .addField("Latest Bot Announcement", `${announcement.announcement}`)
-        .addField("Guild Forms", `**Invite:** ${doc.guildInvite || 'None'}\n**Appeal Form:** ${doc.guildAppeal || 'None'}`)
         .setColor('RANDOM')
         .setFooter({text: `${blacklist ? 'You are currently bot-banned. You cannot run any commands' : 'Hello :)'}`})
-        return embed
+        return interaction.reply({embeds: [embed], components: [row]})
             }
     }
 }

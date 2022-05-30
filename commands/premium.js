@@ -1,11 +1,13 @@
 const { MessageEmbed } = require('discord.js')
 const premuimGuildsSchema = require('../models/premiumGuild-schema')
-const setupSchema = require('../models/setup-schema')
+const premiumCodeSchema = require('../models/premiumCode-schema')
+const moment = require('moment')
+const voucher_codes = require('voucher-code-generator')
 
 module.exports = {
 name: 'premium',
 aliases: [''],
-description: 'Manage a servers premium status',
+description: 'Manage a servers premium status.',
 category: 'Dev',
 slash: true,
 ownerOnly: true,
@@ -50,6 +52,61 @@ options: [
                 required: true
             },
         ]
+    },
+    {
+        name: 'gen-code',
+        description: 'Generate a code for users to redeem',
+        type: 'SUB_COMMAND',
+        options: [
+            {
+                name: 'plan',
+                description: 'The plan to use',
+                type: 'STRING',
+                required: true,
+                choices: [
+                    {
+                      name: "daily",
+                      value: "daily",
+                    },
+                    {
+                      name: "weekly",
+                      value: "weekly",
+                    },
+                    {
+                      name: "monthly",
+                      value: "monthly",
+                    },
+                    {
+                      name: "yearly",
+                      value: "yearly",
+                    },
+                  ],
+            },
+            {
+                name: 'amount',
+                description: 'The amount of codes to create',
+                type: "NUMBER",
+                required: false,
+            },
+        ],
+    },
+    {
+        name: 'delete-code',
+        description: 'Delete a code',
+        type: 'SUB_COMMAND',
+        options: [
+            {
+                name: 'code',
+                description: 'The code to delete',
+                type: 'STRING',
+                required: true
+            }
+        ],
+    },
+    {
+        name: 'list-codes',
+        description: 'List all the active codes',
+        type: 'SUB_COMMAND'
     },
 ],
 cooldown: '',
@@ -131,13 +188,82 @@ callback: async({interaction, client}) => {
             const server = client.guilds.cache.get(serverId)
             const channel = server.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(server.me).has('SEND_MESSAGES', 'EMBED_LINKS'))
             await channel.send({embeds: [leaveEmbed]})
-            server.leave()
+            if (interaction.options.getString('leave') === '0') {
+                server.leave()
+            }
         } catch {}
         const removeEmbed = new MessageEmbed()
         .setTitle('Removed a premium guild')
         .setDescription(`The guild \`${serverId}\` no longer has premium`)
         .setColor('RED')
         interaction.reply({embeds: [removeEmbed]})
+        result.delete()
+    } else if (interaction.options.getSubcommand() === 'gen-code') {
+        let codes = []
+
+        const plan = interaction.options.getString('plan')
+
+        let amount = interaction.options.getNumber("amount");
+        if (!amount) amount = 1;
+
+        for (var i = 0; i < amount; i++) {
+        const codePremium = voucher_codes.generate({
+            pattern: "####-####-####",
+        });
+
+        const code = codePremium.toString().toUpperCase();
+
+        const find = await premiumCodeSchema.findOne({
+            code: code,
+        });
+
+        if (!find) {
+            premiumCodeSchema.create({
+            code: code,
+            plan: plan,
+            });
+
+            codes.push(`${i + 1}- ${code}`);
+        }
+        }
+
+        return await interaction.reply({
+        content: `\`\`\`Generated +${codes.length}\n\n--------\n${codes.join(
+            "\n"
+        )}\n--------\n\nType - ${plan}\n\`\`\`\nTo redeem, use \`/redeem <code>\``, ephemeral: true
+        });
+    } else if (interaction.options.getSubcommand() === 'list-codes') {
+        const results = await premiumCodeSchema.find().limit(50)
+        let text = ''
+
+        for (let counter = 0; counter < results.length; ++counter) {
+            const { code, plan } = results[counter]
+
+            text += `**#${counter + 1}** \`${code}\` - \`${plan}\`\n`
+        }
+        const listEmbed = new MessageEmbed()
+        .setTitle('Active codes')
+        .setDescription(text)
+        .setColor('0xFF3D15')
+
+        interaction.reply({embeds: [listEmbed]})
+    } else if (interaction.options.getSubcommand() === 'delete-code') {
+        let code = interaction.options.getString('code')
+        const result = await premiumCodeSchema.findOne({code: code.toUpperCase()})
+
+        const invalidCodeEmbed = new MessageEmbed()
+        .setTitle('Invalid code')
+        .setDescription(`\`${code.toUpperCase()}\` is not a valid code`)
+        .setColor('RED')
+
+        if (!result) return interaction.reply({embeds: [invalidCodeEmbed]})
+
+        const deletedCodeEmbed = new MessageEmbed()
+        .setTitle('Deleted a code')
+        .setDescription(`I have deleted the code \`${code.toUpperCase()}\``)
+        .setColor('GOLD')
+
+        interaction.reply({embeds: [deletedCodeEmbed]})
         result.delete()
     }
 }
