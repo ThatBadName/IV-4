@@ -3,7 +3,7 @@ const { Client, Message, MessageEmbed,  MessageButton, MessageActionRow, Command
 module.exports = {
     name: 'ticket-panel',
     description: "Sends a ticket pannel to a channel.",
-    category: "Config",
+    category: "Admin",
     permissions: ['ADMINISTRATOR'],
     slash: true,
     guildOnly: true,

@@ -7,7 +7,7 @@ const setupSchema = require('../models/setup-schema')
 module.exports = {
     name: 'xp',
     description: 'Manage a users xp.',
-    category: 'Fun',
+    category: 'Dev',
     slash: true,
     ownerOnly: true,
     options: [

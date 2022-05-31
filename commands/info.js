@@ -34,7 +34,7 @@ module.exports = {
                 .addComponents(
                     new MessageButton()
                     .setStyle('LINK')
-                    .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=8&scope=bot%20applications.commands')
+                    .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=1642824465782&scope=bot%20applications.commands')
                     .setLabel('Invite Me')
                 )
                 .addComponents(
@@ -79,7 +79,7 @@ module.exports = {
         .addComponents(
             new MessageButton()
             .setStyle('LINK')
-            .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=8&scope=bot%20applications.commands')
+            .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=1642824465782&scope=bot%20applications.commands')
             .setLabel('Invite Me')
         )
         .addComponents(

@@ -4,7 +4,7 @@ const { inspect } = require('util')
 module.exports = {
         name: 'eval',
         description: 'Evaluate some code',
-        category: 'Config',
+        category: 'Dev',
         slash: false,
         testOnly: true,
         ownerOnly: true,

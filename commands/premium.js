@@ -3,6 +3,7 @@ const premuimGuildsSchema = require('../models/premiumGuild-schema')
 const premiumCodeSchema = require('../models/premiumCode-schema')
 const moment = require('moment')
 const voucher_codes = require('voucher-code-generator')
+const premiumExpiredTimeout = require('../models/premiumExpiredTimeout-schema')
 
 module.exports = {
 name: 'premium',
@@ -108,6 +109,11 @@ options: [
         description: 'List all the active codes',
         type: 'SUB_COMMAND'
     },
+    {
+        name: 'list-guilds',
+        description: 'List all the premium guilds',
+        type: 'SUB_COMMAND'
+    },
 ],
 cooldown: '',
 requireRoles: false,
@@ -118,6 +124,7 @@ callback: async({interaction, client}) => {
 
     if (action === 'add') {
         const serverId = interaction.options.getString('server-id')
+        const check = await premiumTimeoutSchema.findOne({guildId: serverId})
         const type = interaction.options.getString('period')
         const amount = interaction.options.getNumber('amount')
         const result = await premuimGuildsSchema.findOne({guildId: serverId})
@@ -161,6 +168,7 @@ callback: async({interaction, client}) => {
             const server = client.guilds.cache.get(serverId)
             const channel = server.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(server.me).has('SEND_MESSAGES', 'EMBED_LINKS'))
             await channel.send({embeds: [giftEmbed]})
+            check.delete()
         } catch {}
 
         return interaction.reply({embeds: [addEmbed]})
@@ -188,9 +196,6 @@ callback: async({interaction, client}) => {
             const server = client.guilds.cache.get(serverId)
             const channel = server.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(server.me).has('SEND_MESSAGES', 'EMBED_LINKS'))
             await channel.send({embeds: [leaveEmbed]})
-            if (interaction.options.getString('leave') === '0') {
-                server.leave()
-            }
         } catch {}
         const removeEmbed = new MessageEmbed()
         .setTitle('Removed a premium guild')
@@ -239,7 +244,7 @@ callback: async({interaction, client}) => {
         for (let counter = 0; counter < results.length; ++counter) {
             const { code, plan } = results[counter]
 
-            text += `**#${counter + 1}** \`${code}\` - \`${plan}\`\n`
+            text += `\`${code}\` - \`${plan}\`\n`
         }
         const listEmbed = new MessageEmbed()
         .setTitle('Active codes')
@@ -265,6 +270,21 @@ callback: async({interaction, client}) => {
 
         interaction.reply({embeds: [deletedCodeEmbed]})
         result.delete()
+    } else if (interaction.options.getSubcommand() === 'list-guilds') {
+        const results = await premuimGuildsSchema.find().limit(50)
+        let text = ''
+
+        for (let counter = 0; counter < results.length; ++counter) {
+            const { guildId, expires } = results[counter]
+
+            text += `\`${guildId}\` - Expires <t:${Math.round(expires.getTime() / 1000)}:R>\n`
+        }
+        const listEmbed = new MessageEmbed()
+        .setTitle('Premium Guilds')
+        .setDescription(text)
+        .setColor('0xFF3D15')
+
+        interaction.reply({embeds: [listEmbed]})
     }
 }
 }
