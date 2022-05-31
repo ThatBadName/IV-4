@@ -1,7 +1,7 @@
 # IV-4
 
-![Discord Bots](https://top.gg/api/widget/upvotes/919242400738730005.svg?noavatar=true)\
-https://top.gg/bot/919242400738730005
+![Discord Bots](https://top.gg/api/widget/919242400738730005.svg)\
+*https://top.gg/bot/919242400738730005*
 
 IF YOU USE ANY OF THIS CODE YOU MUST FOLLOW THE LISENCE
 
