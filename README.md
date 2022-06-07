@@ -18,4 +18,6 @@ MONGO_URI=<yourMongooseUri>
 4) node index.js to run
 
 If you need any help with the bot please join the support server\
-*The code for IV-5 will be kept hidden*
+*The code for IV-5 will be kept private*
+
+**I will try and update this every week (if there is an update)**
