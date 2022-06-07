@@ -1,7 +1,7 @@
 const premiumGuildSchema = require('../models/premiumGuild-schema')
 const premiumCodeSchema = require('../models/premiumCode-schema')
 const premiumTimeoutSchema = require('../models/premiumExpiredTimeout-schema')
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed, MessageActionRow, MessageButton, createMessageComponentCollector } = require('discord.js')
 
 module.exports = {
 name: 'redeem',
@@ -36,7 +36,6 @@ callback: async({interaction}) => {
             return
         }
     let code = interaction.options.getString('code')
-    const check = await premiumTimeoutSchema.findOne({guildId: interaction.guild.id})
 
     let guild = await premiumGuildSchema.findOne({guildId: interaction.guild.id})
 
@@ -79,12 +78,61 @@ callback: async({interaction}) => {
     .setDescription(`Invite the premium bot [here](https://discord.com/api/oauth2/authorize?client_id=980386075014991912&permissions=1644971949559&scope=bot%20applications.commands)`)
     .setColor('GOLD')
 
-    interaction.reply({embeds: [successEmbed]})
-    await premiumGuildSchema.create({
-        guildId: interaction.guild.id,
-        expires: duration
+    const confirmEmbed = new MessageEmbed()
+    .setTitle('Are you sure?')
+    .setDescription(`Are you 100% sure that you want to claim premium in the server **${interaction.guild.name}**`)
+    .setFooter({text: `If you click confirm and it is the wrong server you WILL NOT get a refund`})
+    .setColor('RED')
+
+    const row = new MessageActionRow()
+    .addComponents(
+        new MessageButton()
+        .setCustomId('yesPremium')
+        .setLabel('Confirm')
+        .setStyle('SUCCESS')
+    )
+    .addComponents(
+        new MessageButton()
+        .setCustomId('noPremium')
+        .setLabel('Cancel')
+        .setStyle('DANGER')
+    )
+
+    const cancelEmbed = new MessageEmbed()
+    .setTitle('Canceled')
+    .setDescription(`Premium has not been added to this server. The code is still valid`)
+    .setColor('RED')
+
+    const message = await interaction.reply({embeds: [confirmEmbed], components: [row], fetchReply: true})
+
+    const filter = i => i.customId === 'yesPremium' || i.customId === 'noPremium' && i.user.id === interaction.user.id
+    const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 })
+
+    let collected = false
+
+    collector.on('collect', async(i) => {
+        if (i.customId === 'yesPremium') {
+            if (i.user.id !== interaction.user.id) return
+            const check = await premiumTimeoutSchema.findOne({guildId: interaction.guild.id})
+            await premiumGuildSchema.create({
+                guildId: interaction.guild.id,
+                expires: duration
+            })
+            message.edit({embeds: [successEmbed], components: []})
+            premiumCode.delete()
+            if (!check) return
+            check.delete()
+            collected = true
+        } else if (i.customId === 'noPremium') {
+            if (i.user.id !== interaction.user.id) return
+            message.edit({embeds: [cancelEmbed], components: []})
+            collected = true
+        }
     })
-    premiumCode.delete()
-    check.delete()
+    collector.on('end' , async(i) => {
+        if (collected = false) {
+            message.edit({embeds: [cancelEmbed], components: []})
+        }
+    })
 }
 }

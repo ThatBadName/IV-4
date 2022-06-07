@@ -48,6 +48,9 @@ async function spamCheck (message, set, time) {
                     duration: '2h',
                     type: 'timeout',
                 })
+                const checkEnabledAutomod = await setupSchema.findOne({guildId: message.guild.id, automodEnabled: false})
+                if (checkEnabledAutomod) return
+                const checkEnabledLogging = await setupSchema.findOne({guildId: message.guild.id, loggingEnabled: false})
 
                 const logEmbed = new MessageEmbed()
                     .setColor('PURPLE')

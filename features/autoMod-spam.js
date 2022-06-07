@@ -13,6 +13,8 @@ module.exports = (client) => {
     if(message.channel.name === 'spam') return;
     if(message.channel.id === '963476714124632126') return;
     if(message.member.permissions.has("ADMINISTRATOR")) return
+    const checkEnabledAutomod = await setupSchema.findOne({guildId: message.guild.id, automodEnabled: false})
+    if (checkEnabledAutomod) return
 
     const functions = require('../spam-check')
     functions.spamCheck(message, set, 2000)

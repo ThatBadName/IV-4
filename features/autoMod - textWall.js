@@ -18,6 +18,9 @@ module.exports = (client) => {
     if(message.channel.name === 'spam') return;
     if(message.member.permissions.has("ADMINISTRATOR")) return
     if(message.channel.id === database.advertisingChannelId) return
+    const checkEnabledAutomod = await setupSchema.findOne({guildId: message.guild.id, automodEnabled: false})
+    if (checkEnabledAutomod) return
+    const checkEnabledLogging = await setupSchema.findOne({guildId: message.guild.id, loggingEnabled: false})
 
         if (message.content.length > 300) {
         message.channel.send(`${message.author} You have been muted for sending very long messages`)
@@ -64,6 +67,7 @@ module.exports = (client) => {
                 type: 'timeout',
             })
 
+            if (checkEnabledLogging) return
             const logEmbed = new MessageEmbed()
                 .setColor('PURPLE')
                 .setTitle('STRIKE ADD')

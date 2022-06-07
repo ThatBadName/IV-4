@@ -16,6 +16,9 @@ module.exports = (client) => {
         if(message.channel.id === '963476714124632126') return;
         const database = await setupSchema.findOne({guildId: message.guild.id})
         if (!database) return
+        const checkEnabledAutomod = await setupSchema.findOne({guildId: message.guild.id, automodEnabled: false})
+        if (checkEnabledAutomod) return
+        const checkEnabledLogging = await setupSchema.findOne({guildId: message.guild.id, loggingEnabled: false})
         if (message.channel.id === database.advertisingChannelId) return
      
         const words = ['.gg/', 'discord.com/invite', 'discordapp.com/invite', 'gg/']
@@ -61,6 +64,7 @@ module.exports = (client) => {
                     duration: '1h',
                     type: 'timeout',
                 })
+                if (checkEnabledLogging) return
         
                     const logEmbed = new MessageEmbed()
                         .setColor('PURPLE')

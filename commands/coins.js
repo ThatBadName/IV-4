@@ -6,7 +6,7 @@ const balanceSchema = require('../models/balance-schema')
 module.exports = {
     name: 'coins',
     description: 'Manage a users coins.',
-    category: 'Economy',
+    category: 'Dev',
     slash: true,
     ownerOnly: true,
     options: [{

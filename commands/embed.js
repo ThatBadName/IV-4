@@ -55,85 +55,6 @@ module.exports = {
             description: 'The embed colour',
             required: false,
             type: 'STRING',
-            choices: [
-                {
-                    name: 'red',
-                    description: 'Sets the embed colour to red',
-                    value: '0xFF0000',
-                },
-                {
-                    name: 'orange',
-                    description: 'Sets the embed colour to orange',
-                    value: '0xFF7700',
-                },
-                {
-                    name: 'yellow',
-                    description: 'Sets the embed colour to yellow',
-                    value: '0xFFcc00',
-                },
-                {
-                    name: 'lime',
-                    description: 'Sets the embed colour to lime',
-                    value: '0x10FF00',
-                },
-                {
-                    name: 'green',
-                    description: 'Sets the embed colour to green',
-                    value: '0x005500',
-                },
-                {
-                    name: 'aqua',
-                    description: 'Sets the embed colour to aqua',
-                    value: '0x00FFF8',
-                },
-                {
-                    name: 'blue',
-                    description: 'Sets the embed colour to blue',
-                    value: '0x0000FF',
-                },
-                {
-                    name: 'blurple',
-                    description: 'Sets the embed colour to blurple',
-                    value: '0x4E5D94',
-                },
-                {
-                    name: 'purple',
-                    description: 'Sets the embed colour to purple',
-                    value: '0x4F00FF',
-                },
-                {
-                    name: 'pink',
-                    description: 'Sets the embed colour to pink',
-                    value: '0xFF00FF',
-                },
-                {
-                    name: 'brown',
-                    description: 'Sets the embed colour to brown',
-                    value: '0x482218',
-                },
-                {
-                    name: 'maroon',
-                    description: 'Sets the embed colour to maroon',
-                    value: '0x300006',
-                },
-                {
-                    name: 'white',
-                    description: 'Sets the embed colour to white',
-                    value: '0xFFFFFF',
-                },
-                {
-                    name: 'black',
-                    description: 'Sets the embed colour to black',
-                    value: '0x000000',
-                },
-                {
-                    name: 'grey',
-                    description: 'Sets the embed colour to grey',
-                    value: '0x777777',
-                },
-
-            ],
-            
         },
         {
             name: 'image',
@@ -168,30 +89,39 @@ module.exports = {
         const author = interaction.options.getString('author')
         var description = interaction.options.getString('body')
         const url = interaction.options.getString('url')
-        const colour = interaction.options.getString('colour')
+        let colour = interaction.options.getString('colour')
         const image = interaction.options.getString('image')
         const thumbnail = interaction.options.getString('thumbnail')
         const footer = interaction.options.getString('footer')
 
-        const embed = new MessageEmbed()
-        .setTimestamp(interaction.options.getBoolean('timestamp'))
-        if (title) embed.setTitle(title)
-        if (author) embed.setAuthor(author)
-        if (description) {description.replaceAll('/n/', '\n')
-        embed.setDescription(description)}
-        if (url) embed.setURL(url)
-        if (colour) embed.setColor(colour)
-        if (image) embed.setImage(image)
-        if (thumbnail) embed.setThumbnail(thumbnail)
-        if (footer) embed.setFooter(footer)
+        if (!title && !author && !description && !image && !footer) return interaction.reply({content: 'You must provide at least 1 field', ephemeral: true})
 
+        try {
+            const embed = new MessageEmbed()
+            .setTimestamp(interaction.options.getBoolean('timestamp'))
+            if (title) embed.setTitle(title)
+            if (author) embed.setAuthor({text: `${author}`})
+            if (description) {description.replaceAll('/n/', '\n')
+            embed.setDescription(description)}
+            if (url) embed.setURL(url)
+            if (colour) {
+                let re = /[0-9A-Fa-f]{6}/g
+                colour.replaceAll('#', '')
+                if (re.test(colour)) {
+                    embed.setColor(`0x${colour}`)
+                } else embed.setColor('GREYPLE')
+            }
+            if (image) embed.setImage(image)
+            if (thumbnail) embed.setThumbnail(thumbnail)
+            if (footer) embed.setFooter({text: `${footer}`})
 
-        messageChannel.send({embeds: [embed]})
-
-        interaction.reply({
-            custom: true,
-            content: 'Message sent',
-            ephemeral: true,
-        })
+                messageChannel.send({embeds: [embed]}).then(interaction.reply({
+                    custom: true,
+                    content: 'Message sent',
+                    ephemeral: true,
+                }))
+            } catch {
+                interaction.reply({content: 'There was an error in your input', ephemeral: true})
+            }
     }
 }

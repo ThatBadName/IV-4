@@ -3,6 +3,8 @@ const setupSchema = require('../models/setup-schema')
 
 module.exports = (client) => {
    client.on('messageDelete', async(message) => {
+      const checkEnabledLogging = await setupSchema.findOne({guildId: message.guild.id, loggingEnabled: false})
+      if (checkEnabledLogging) return
       const result = await setupSchema.findOne({guildId: message.guild.id})
         const channel = message.guild.channels.cache.get(result.logChannelId)
         if (!result) return

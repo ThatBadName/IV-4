@@ -68,7 +68,15 @@ client.on('ready', async () => {
         mongoUri: process.env.MONGO_URI,
         dbOptions: {
             keepAlive: true
-        }
+        },
+        disabledDefaultCommands: [
+            'help',
+            // 'command',
+            // 'language',
+            // 'prefix',
+            // 'requiredrole',
+            // 'channelonly'
+        ],
       })
       const maintenance = await maintenanceSchema.findOne({maintenance: true})
             if (maintenance) {

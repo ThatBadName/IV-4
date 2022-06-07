@@ -3,6 +3,8 @@ const setupSchema = require('../models/setup-schema')
 
 module.exports = (client) => {
    client.on('guildMemberRemove', async(member) => {
+      const checkEnabledLogging = await setupSchema.findOne({guildId: member.guild.id, loggingEnabled: false})
+      if (checkEnabledLogging) return
         const { guild } = member 
         const result = await setupSchema.findOne({guildId: guild.id})
         const channel = guild.channels.cache.get(result.logChannelId)

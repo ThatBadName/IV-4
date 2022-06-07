@@ -183,6 +183,58 @@ module.exports = {
             ],
         },
         {
+            name: 'enable-logging',
+            description: 'Enable and disable logging',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'enabled',
+                    description: 'Whether or not it is enabled',
+                    type: 'BOOLEAN',
+                    required: true
+                }
+            ]
+        },
+        {
+            name: 'enable-automod',
+            description: 'Enable and disable automod',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'enabled',
+                    description: 'Whether or not it is enabled',
+                    type: 'BOOLEAN',
+                    required: true
+                }
+            ]
+        },
+        {
+            name: 'enable-levelling',
+            description: 'Enable and disable levelling',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'enabled',
+                    description: 'Whether or not it is enabled',
+                    type: 'BOOLEAN',
+                    required: true
+                }
+            ]
+        },
+        {
+            name: 'enable-economy',
+            description: 'Enable and disable economy',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'enabled',
+                    description: 'Whether or not it is enabled',
+                    type: 'BOOLEAN',
+                    required: true
+                }
+            ]
+        },
+        {
             name: 'level',
             description: 'Manage levelling rewards',
             type: 'SUB_COMMAND_GROUP',
@@ -250,6 +302,42 @@ module.exports = {
                 content: `Set the support role to <@&${roleID}>`,
                 ephemeral: true,
             })
+        }
+        else if (interaction.options.getSubcommand() === 'enable-logging') {
+            const enabled = interaction.options.getBoolean('enabled')
+            const update = await setupSchema.findOneAndUpdate({guildId: interaction.guild.id}, {loggingEnabled: enabled})
+            if (!update) {
+                await setupSchema.create({guildId: interaction.guild.id, loggingEnabled: true})
+            }
+
+            interaction.reply({content: `${enabled === true ? `I have enabled logging` : `I have disabled logging`}`})
+        }
+        else if (interaction.options.getSubcommand() === 'enable-automod') {
+            const enabled = interaction.options.getBoolean('enabled')
+            const update = await setupSchema.findOneAndUpdate({guildId: interaction.guild.id}, {automodEnabled: enabled})
+            if (!update) {
+                await setupSchema.create({guildId: interaction.guild.id, automodEnabled: true})
+            }
+
+            interaction.reply({content: `${enabled === true ? `I have enabled automod` : `I have disabled automod`}`})
+        }
+        else if (interaction.options.getSubcommand() === 'enable-levelling') {
+            const enabled = interaction.options.getBoolean('enabled')
+            const update = await setupSchema.findOneAndUpdate({guildId: interaction.guild.id}, {levellingEnabled: enabled})
+            if (!update) {
+                await setupSchema.create({guildId: interaction.guild.id, levellingEnabled: true})
+            }
+
+            interaction.reply({content: `${enabled === true ? `I have enabled levelling` : `I have disabled levelling`}`})
+        }
+        else if (interaction.options.getSubcommand() === 'enable-economy') {
+            const enabled = interaction.options.getBoolean('enabled')
+            const update = await setupSchema.findOneAndUpdate({guildId: interaction.guild.id}, {economyEnabled: enabled})
+            if (!update) {
+                await setupSchema.create({guildId: interaction.guild.id, economyEnabled: true})
+            }
+
+            interaction.reply({content: `${enabled === true ? `I have enabled economy` : `I have disabled economy`}`})
         }
 
         else if (interaction.options.getSubcommand() === 'support-category') {
@@ -361,6 +449,10 @@ module.exports = {
                 {name: 'Suggestions Channel', value: `${doc.suggestionChannelId ? `<#${doc.suggestionChannelId}>` : 'None'}`, inline: true},
                 {name: 'Log Channel', value: `${doc.logChannelId ? `<#${doc.logChannelId}>` : 'None'}`, inline: true},
                 {name: 'Advertising Channel', value: `${doc.advertisingChannelId ? `<#${doc.advertisingChannelId}>` : 'None'}`, inline: true},
+                {name: 'Logging enabled', value: `${doc.loggingEnabled ? `${doc.loggingEnabled}` : 'True'}`, inline: true},
+                {name: 'Automod enabled', value: `${doc.automodEnabled ? `${doc.automodEnabled}` : 'True'}`, inline: true},
+                {name: 'Levelling enabled', value: `${doc.automodEnabled ? `${doc.automodEnabled}` : 'True'}`, inline: true},
+                {name: 'Economy enabled', value: `${doc.automodEnabled ? `${doc.automodEnabled}` : 'True'}`, inline: true},
                 {name: 'Welcome Message', value: `${doc2.message ? `${doc2.message}` : 'None'}`, inline: false},
             )
 

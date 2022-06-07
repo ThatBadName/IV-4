@@ -14,6 +14,9 @@ module.exports = (client) => {
         if(message.channel.type === 'DM') return;
         if(message.member.permissions.has("ADMINISTRATOR")) return
         if(message.channel.id === '963476714124632126') return;
+        const checkEnabledAutomod = await setupSchema.findOne({guildId: message.guild.id, automodEnabled: false})
+        if (checkEnabledAutomod) return
+        const checkEnabledLogging = await setupSchema.findOne({guildId: message.guild.id, loggingEnabled: false})
         const database = await setupSchema.findOne({guildId: message.guild.id})
      
         const words = ['nigg', 'Nigg', 'NIGG', 'n1gg', 'N1gg', 'N1GG', 'n!gg', 'N!gg', 'N!GG', 'filtertest1234%%__', "paki", "pak1", "pak!", "Paki", "Pak1", "Pak!", "PAKI", "PAK1", "PAK!", "paky", "Paky", "paci", "pac1", "pak!", "Paci", "Pac1", "Pac!", "PAC1", "PACI", "PAC!", "n!g", "N!g", "N!G", "n1g", "N1g", "N1G", "fag", "Fag", "FAG", "nlg", "Nlg", "NLG"]
@@ -59,6 +62,8 @@ module.exports = (client) => {
                     duration: '12h',
                     type: 'timeout',
                 })
+
+                if (checkEnabledLogging) return
         
                     const logEmbed = new MessageEmbed()
                         .setColor('PURPLE')

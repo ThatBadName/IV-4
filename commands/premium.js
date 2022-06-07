@@ -114,6 +114,11 @@ options: [
         description: 'List all the premium guilds',
         type: 'SUB_COMMAND'
     },
+    {
+        name: 'list-expiring-guilds',
+        description: 'List all the guilds that have expired and are waiting',
+        type: 'SUB_COMMAND'
+    },
 ],
 cooldown: '',
 requireRoles: false,
@@ -281,6 +286,21 @@ callback: async({interaction, client}) => {
         }
         const listEmbed = new MessageEmbed()
         .setTitle('Premium Guilds')
+        .setDescription(text)
+        .setColor('0xFF3D15')
+
+        interaction.reply({embeds: [listEmbed]})
+    } else if (interaction.options.getSubcommand() === 'list-expiring-guilds') {
+        const results = await premiumTimeoutSchema.find().limit(50)
+        let text = ''
+
+        for (let counter = 0; counter < results.length; ++counter) {
+            const { guildId, expires } = results[counter]
+
+            text += `\`${guildId}\` - Expires <t:${Math.round(expires.getTime() / 1000)}:R>\n`
+        }
+        const listEmbed = new MessageEmbed()
+        .setTitle('Premium Guilds (Expired)')
         .setDescription(text)
         .setColor('0xFF3D15')
 
