@@ -8,6 +8,7 @@ const schema = new Schema({
    channelId: String,
    expires: Date,
    reminderSet: Date,
+   reminderId: String
 }, {
    timestamps: false
 })

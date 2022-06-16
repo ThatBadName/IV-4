@@ -18,10 +18,10 @@ const schema = new Schema({
     suggestionChannelId: String,
     logChannelId: String,
     advertisingChannelId: String,
-    loggingEnabled: {type: Boolean, default: true},
-    automodEnabled: {type: Boolean, default: true},
-    levellingEnabled: {type: Boolean, default: true},
-    economyEnabled: {type: Boolean, default: true},
+    loggingEnabled: {type: Boolean, default: false},
+    automodEnabled: {type: Boolean, default: false},
+    levellingEnabled: {type: Boolean, default: false},
+    economyEnabled: {type: Boolean, default: false},
 })
 
 const name = 'setupSchema'
