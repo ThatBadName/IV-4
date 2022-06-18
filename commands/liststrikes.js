@@ -53,11 +53,13 @@ module.exports = {
                 new MessageButton()
                 .setCustomId('firstPage')
                 .setEmoji('⏪')
+                .setDisabled(true)
                 .setStyle('SECONDARY'),
 
                 new MessageButton()
                 .setCustomId('backPage')
                 .setEmoji('◀️')
+                .setDisabled(true)
                 .setStyle('SECONDARY'),
 
                 new MessageButton()
@@ -97,6 +99,17 @@ module.exports = {
             if (i.customId === 'backPage') {
                 if (currentPage !== 0) {
                     --currentPage
+                    if (currentPage === 0) {
+                        pageButtons.components[2].setDisabled(false)
+                        pageButtons.components[3].setDisabled(false)
+                        pageButtons.components[0].setDisabled(true)
+                        pageButtons.components[1].setDisabled(true)
+                    } else {
+                        pageButtons.components[2].setDisabled(false)
+                        pageButtons.components[3].setDisabled(false)
+                        pageButtons.components[0].setDisabled(false)
+                        pageButtons.components[1].setDisabled(false)
+                    }
                     messageSendStart.edit({
                         content: `Current Page: \`${currentPage + 1}/${strikeEmbeds.length}\``,
                         embeds: [strikeEmbeds[currentPage]],
@@ -111,6 +124,17 @@ module.exports = {
             } else if (i.customId === 'nextPage') {
                 if (currentPage + 1 !== strikeEmbeds.length) {
                     currentPage++
+                    if (currentPage + 1 === strikeEmbeds.length) {
+                        pageButtons.components[0].setDisabled(false)
+                        pageButtons.components[1].setDisabled(false)
+                        pageButtons.components[2].setDisabled(true)
+                        pageButtons.components[3].setDisabled(true)
+                    } else {
+                        pageButtons.components[2].setDisabled(false)
+                        pageButtons.components[3].setDisabled(false)
+                        pageButtons.components[0].setDisabled(false)
+                        pageButtons.components[1].setDisabled(false)
+                    }
                     messageSendStart.edit({
                         content: `Current Page: \`${currentPage + 1}/${strikeEmbeds.length}\``,
                         embeds: [strikeEmbeds[currentPage]],
@@ -125,6 +149,17 @@ module.exports = {
             } else if (i.customId === 'lastPage') {
                 if (currentPage + 1 !== strikeEmbeds.length) {
                     currentPage = strikeEmbeds.length - 1
+                    if (currentPage + 1 === strikeEmbeds.length) {
+                        pageButtons.components[0].setDisabled(false)
+                        pageButtons.components[1].setDisabled(false)
+                        pageButtons.components[2].setDisabled(true)
+                        pageButtons.components[3].setDisabled(true)
+                    } else {
+                        pageButtons.components[2].setDisabled(false)
+                        pageButtons.components[3].setDisabled(false)
+                        pageButtons.components[0].setDisabled(false)
+                        pageButtons.components[1].setDisabled(false)
+                    }
                     messageSendStart.edit({
                         content: `Current Page: \`${currentPage + 1}/${strikeEmbeds.length}\``,
                         embeds: [strikeEmbeds[currentPage]],
@@ -139,6 +174,17 @@ module.exports = {
             } else if (i.customId === 'firstPage') { //!
                 if (currentPage !== 0) {
                     currentPage = 0
+                    if (currentPage === 0) {
+                        pageButtons.components[2].setDisabled(false)
+                        pageButtons.components[3].setDisabled(false)
+                        pageButtons.components[0].setDisabled(true)
+                        pageButtons.components[1].setDisabled(true)
+                    } else {
+                        pageButtons.components[2].setDisabled(false)
+                        pageButtons.components[3].setDisabled(false)
+                        pageButtons.components[0].setDisabled(false)
+                        pageButtons.components[1].setDisabled(false)
+                    }
                     messageSendStart.edit({
                         content: `Current Page: \`${currentPage + 1}/${strikeEmbeds.length}\``,
                         embeds: [strikeEmbeds[currentPage]],
@@ -164,7 +210,7 @@ module.exports = {
                 let j = i
                 k += 5
                 let info = `No Strikes Logged`
-                info = current.map(strike => `**ID**: \`${strike._id}\`\n**Date**: \`${strike.createdAt.toLocaleString()}\`\n**Reason**: ${strike.reason}`).join('\n\n')
+                info = current.map(strike => `**ID**: \`${strike._id}\`\n**Date**: <t:${Math.round(strike.createdAt.getTime() / 1000)}>\n**Reason**: ${strike.reason}`).join('\n\n')
                 const embed = new MessageEmbed()
                     .setColor('RANDOM')
                     .setTitle('Strike List')
