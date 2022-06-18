@@ -19,7 +19,7 @@ module.exports = (client) => {
         .setColor('ORANGE')
         .setTitle(`Message Deleted`)
         .setDescription(`A message by ${message.author} has been deleted in ${message.channel})\n
-        **Message**:\`\`\`${original}\`\`\``)
+        **Message**:\n\`\`\`${original}\`\`\``)
         .setFooter({text: `User: ${message.author.tag} | ID: ${message.author.id}`})
 
         channel.send({embeds: [logEmbed]})

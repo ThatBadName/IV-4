@@ -48,6 +48,19 @@ module.exports = {
                 },
             ],
         },
+        {
+            name: 'search',
+            description: 'Search for a blacklisted user',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'userid',
+                    description: 'The ID of the user to blacklist',
+                    type: 'STRING',
+                    required: true,
+                },
+            ]
+        },
     ],
     callback: async({interaction}) => {
         const blacklist = await blacklistSchema.findOne({userId: interaction.user.id})
@@ -66,7 +79,7 @@ module.exports = {
                 description += `**Date:** \`${blacklist.createdAt.toLocaleString()}\`\n`
                 description += `**Reason:** ${blacklist.reason}\n\n`
             }
-            const embed = new MessageEmbed().setDescription(description || 'There are no users blacklisted').setColor('RANDOM')
+            const embed = new MessageEmbed().setDescription(description.slice(0, 4000) || 'There are no users blacklisted').setColor('RANDOM')
             return embed
         } else if (interaction.options.getSubcommand() === 'add') {
             const userID = interaction.options.getString('userid')
@@ -92,6 +105,11 @@ module.exports = {
                 content: `<@${userID}> (${userID}) has been removed from the blacklist`,
                 ephemeral: true,
             })
+        } else if (interaction.options.getSubcommand() === 'search') {
+            const userId = interaction.options.getString('userid')
+            const result = await blacklistSchema.findOne({userId: userId})
+            if (!result) return interaction.reply({embeds: [new MessageEmbed().setTitle('This user is not blacklisted').setColor('0xff0000')]})
+            interaction.reply({embeds: [new MessageEmbed().setTitle('This user has been found in the blacklist').setColor('GOLD').setDescription(`**User**: <@${result.userId}>\n**User ID**: ${result.userId}\n**Date**: ${result.createdAt.toLocaleString()}\n**Reason**: \`${result.reason}\``)]})
         }
     }
 }

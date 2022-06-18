@@ -1,33 +1,92 @@
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
 const levelrewardSchema = require('../models/levelreward-schema')
 const levelSchema = require('../models/leveling-schema')
 const maintenanceSchema = require('../models/mantenance-schema')
 const blacklistSchema = require('../models/blacklist-schema')
 const balanceSchema = require('../models/balance-schema')
 const boosterSchema = require('../models/boost-schema')
+const setupSchema = require('../models/setup-schema')
 const today = new Date()
 
 module.exports = (client) => {
     client.on('messageCreate', async (message) => {
         const maintenance = await maintenanceSchema.findOne({maintenance: true})
-            if (maintenance && message.author.id !== '804265795835265034') {
-                if (message.content.startsWith('<@919242400738730005>')) message.reply(`The bot is currently down for maintenance. You are not able to run any commands other than \`/info\`.\nReason for maintenance:\`\`\`fix\n${maintenance.maintenanceReason}\n\`\`\``)
-                return
-            }
-            const blacklist = await blacklistSchema.findOne({userId: message.author.id})
-            if (blacklist) {
-                if (message.content.startsWith('<@919242400738730005>')) message.reply(`You are blacklisted from using the bot. You can only run the \`/info\` command.\n\nReason:\`\`\`fix\n${blacklist.reason}\n\`\`\``)
-                return
-            }
-
-    if(message.channel.type === 'DM') return; 
-    if(message.author.bot) return;
-    const checkEnabledLevelling = await setupSchema.findOne({guildId: message.guild.id, levellingEnabled: true})
-    const checkEnabledEconomy = await setupSchema.findOne({guildId: message.guild.id, economyEnabled: true})
+        if (maintenance && message.author.id !== '804265795835265034') {
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=1642824465782&scope=bot%20applications.commands')
+                    .setLabel('Invite Me')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setLabel('Support Server')
+                    .setURL('https://discord.gg/hK3gEQ2XUf')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://thatbadname.gitbook.io/iv-4-docs/')
+                    .setLabel('Documentation')
+                )
+            if (message.content.startsWith('<@919242400738730005>')) message.reply({content: `The bot is currently down for maintenance. You are not able to run any commands other than \`/info\`.\nReason for maintenance:\`\`\`fix\n${maintenance.maintenanceReason}\n\`\`\``, components: [row]})
+            return
+        }
+        const blacklist = await blacklistSchema.findOne({userId: message.author.id})
+        if (blacklist) {
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=1642824465782&scope=bot%20applications.commands')
+                    .setLabel('Invite Me')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setLabel('Support Server')
+                    .setURL('https://discord.gg/hK3gEQ2XUf')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://thatbadname.gitbook.io/iv-4-docs/')
+                    .setLabel('Documentation')
+                )
+            if (message.content.startsWith('<@919242400738730005>')) message.reply({content: `You are blacklisted from using the bot. You can only run the \`/info\` command.\n\nReason:\`\`\`fix\n${blacklist.reason}\n\`\`\``, components: [row]})
+            return
+        }
+        
+        if(message.channel.type === 'DM') return; 
+        if(message.author.bot) return;
+        const checkEnabledLevelling = await setupSchema.findOne({guildId: message.guild.id, levellingEnabled: true})
+        const checkEnabledEconomy = await setupSchema.findOne({guildId: message.guild.id, economyEnabled: true})
     if (message.content.startsWith('<@919242400738730005>')) {
+        const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://discord.com/api/oauth2/authorize?client_id=919242400738730005&permissions=1642824465782&scope=bot%20applications.commands')
+                    .setLabel('Invite Me')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setLabel('Support Server')
+                    .setURL('https://discord.gg/hK3gEQ2XUf')
+                )
+                .addComponents(
+                    new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://thatbadname.gitbook.io/iv-4-docs/')
+                    .setLabel('Documentation')
+                )
+
         const pingEmbed = new MessageEmbed()
-        .setTitle(`I'm IV-4`)
-        .setDescription('If you need any help with the bot please join the [Support Server](https://discord.gg/ArpuxMEa55) or read the [Docs](https://thatbadname.gitbook.io/iv-5-docs/)')
+        .setTitle(`I'm IV-4 (But better)`)
+        .setDescription('If you need any help with the bot please join the [Support Server](https://discord.gg/hK3gEQ2XUf) or read the [Docs](https://thatbadname.gitbook.io/iv-4-docs/)')
         .setFields({
             name: 'Where are my commands?',
             value: 'I use /commands. Type `/` and you can see a list of them',
@@ -35,7 +94,7 @@ module.exports = (client) => {
         })
         .setColor('RANDOM')
         .setFooter({text: 'This message will only appear if your message starts with my tag'})
-        message.reply({embeds: [pingEmbed]})
+        message.reply({embeds: [pingEmbed], components: [row]})
         return
     }
 

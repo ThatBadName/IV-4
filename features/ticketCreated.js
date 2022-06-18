@@ -72,15 +72,18 @@ module.exports = (client) => {
                     parent: catId,
                     topic: interaction.user.id
                 }).then(async channel => {
-                    channel.send({
+                    const ticketMessage = await channel.send({
                         content: `Welcome <@${interaction.user.id}> <@&${staff}>`,
                         embeds: [embed],
                         components: [del]
                     })
-                }).then(interaction.reply({
-                    content: `Created ticket`,
-                    ephemeral: true
-                }))
+                    const row = new MessageActionRow()
+                    interaction.reply({
+                        content: `Created ticket`,
+                        ephemeral: true,
+                        components: [row.addComponents(new MessageButton().setLabel('Go to the ticket').setStyle('LINK').setURL(`${ticketMessage.url}`))]
+                    })
+                    })
             } else {
                 interaction.reply({
                     custom: true,
@@ -144,15 +147,18 @@ module.exports = (client) => {
                     parent: catId,
                     topic: interaction.user.id
                 }).then(async channel => {
-                    channel.send({
+                    const ticketMessage = await channel.send({
                         content: `Welcome <@${interaction.user.id}> <@&${staff}>`,
                         embeds: [embed],
                         components: [del]
                     })
-                }).then(interaction.reply({
-                    content: `Created ticket`,
-                    ephemeral: true
-                }))
+                    const row = new MessageActionRow()
+                    interaction.reply({
+                        content: `Created ticket`,
+                        ephemeral: true,
+                        components: [row.addComponents(new MessageButton().setLabel('Go to the ticket').setStyle('LINK').setURL(`${ticketMessage.url}`))]
+                    })
+                    })
 
                 
             } else {
@@ -212,15 +218,18 @@ module.exports = (client) => {
                     parent: catId,
                     topic: interaction.user.id
                 }).then(async channel => {
-                    channel.send({
+                    const ticketMessage = await channel.send({
                         content: `Welcome <@${interaction.user.id}>`,
                         embeds: [embed],
                         components: [del]
                     })
-                }).then(interaction.reply({
-                    content: `Created ticket`,
-                    ephemeral: true
-                }))
+                    const row = new MessageActionRow()
+                    interaction.reply({
+                        content: `Created ticket`,
+                        ephemeral: true,
+                        components: [row.addComponents(new MessageButton().setLabel('Go to the ticket').setStyle('LINK').setURL(`${ticketMessage.url}`))]
+                    })
+                    })
             } else {
                 interaction.reply({
                     custom: true,
@@ -283,15 +292,18 @@ module.exports = (client) => {
                     parent: catId,
                     topic: interaction.user.id
                 }).then(async channel => {
-                    channel.send({
+                    const ticketMessage = await channel.send({
                         content: `Welcome <@${interaction.user.id}> <@&${staff}>`,
                         embeds: [embed],
                         components: [del]
                     })
-                }).then(interaction.reply({
-                    content: `Created ticket`,
-                    ephemeral: true
-                }))
+                    const row = new MessageActionRow()
+                    interaction.reply({
+                        content: `Created ticket`,
+                        ephemeral: true,
+                        components: [row.addComponents(new MessageButton().setLabel('Go to the ticket').setStyle('LINK').setURL(`${ticketMessage.url}`))]
+                    })
+                    })
 
             } else {
                 interaction.reply({
@@ -357,15 +369,18 @@ module.exports = (client) => {
                     parent: catId,
                     topic: interaction.user.id
                 }).then(async channel => {
-                    channel.send({
+                    const ticketMessage = await channel.send({
                         content: `Welcome <@${interaction.user.id}> <@&${staff}>`,
                         embeds: [embed],
                         components: [del]
                     })
-                }).then(interaction.reply({
-                    content: `Created ticket`,
-                    ephemeral: true
-                }))
+                    const row = new MessageActionRow()
+                    interaction.reply({
+                        content: `Created ticket`,
+                        ephemeral: true,
+                        components: [row.addComponents(new MessageButton().setLabel('Go to the ticket').setStyle('LINK').setURL(`${ticketMessage.url}`))]
+                    })
+                    })
 
             } else {
                 interaction.reply({

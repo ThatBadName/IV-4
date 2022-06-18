@@ -21,7 +21,7 @@ module.exports = (client) => {
         .setColor('GREEN')
         .setTitle(`Message Edited`)
         .setDescription(`A [message](${newMessage.url}) by ${newMessage.author} has been edited in ${newMessage.channel})\n
-        **Original**:\`\`\`${original}\`\`\`**Edited**:\`\`\`${edited}\`\`\``)
+        **Original**:\n\`\`\`${original}\`\`\`**Edited**:\n\`\`\`${edited}\`\`\``)
         .setFooter({text: `User: ${newMessage.author.tag} | ID: ${newMessage.author.id}`})
 
         channel.send({embeds: [logEmbed]})
