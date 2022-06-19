@@ -2,7 +2,6 @@
 
 ![Discord Bots](https://top.gg/api/widget/919242400738730005.svg)\
 *https://top.gg/bot/919242400738730005*
-<iframe src="https://discord.com/widget?id=948265730858680350&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
 
 IF YOU USE ANY OF THIS CODE YOU MUST FOLLOW THE LISENCE
 
