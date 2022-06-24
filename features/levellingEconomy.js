@@ -85,7 +85,7 @@ module.exports = (client) => {
                 )
 
         const pingEmbed = new MessageEmbed()
-        .setTitle(`I'm IV-4 (But better)`)
+        .setTitle(`I'm IV-4`)
         .setDescription('If you need any help with the bot please join the [Support Server](https://discord.gg/hK3gEQ2XUf) or read the [Docs](https://thatbadname.gitbook.io/iv-4-docs/)')
         .setFields({
             name: 'Where are my commands?',
@@ -171,7 +171,7 @@ module.exports = (client) => {
                             userId: message.author.id
                         });
     
-                        const requiredXp = data.level * 500 + 100
+                        const requiredXp = data.level * 250 + 100
                         const xpBoosterWeekendEmbed = new MessageEmbed()
                         .setTitle('Level Up')
                         .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)
@@ -210,7 +210,7 @@ module.exports = (client) => {
                             userId: message.author.id
                         });
     
-                        const requiredXp = data.level * 500 + 100
+                        const requiredXp = data.level * 250 + 100
                         const xpBoosterEmbed = new MessageEmbed()
                         .setTitle('Level Up')
                         .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)
@@ -251,7 +251,7 @@ module.exports = (client) => {
                             userId: message.author.id
                         });
     
-                        const requiredXp = data.level * 500 + 100
+                        const requiredXp = data.level * 250 + 100
                         const xpWeekendEmbed = new MessageEmbed()
                         .setTitle('Level Up')
                         .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)
@@ -288,7 +288,7 @@ module.exports = (client) => {
                             userId: message.author.id
                         });
     
-                        const requiredXp = data.level * 500 + 100
+                        const requiredXp = data.level * 250 + 100
                         const xpEmbed = new MessageEmbed()
                         .setTitle('Level Up')
                         .setDescription(`${message.author}, You have leveled up to **Level ${data.level ? data.level + 1 : '1'}**`)

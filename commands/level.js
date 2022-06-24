@@ -84,7 +84,7 @@ module.exports = {
                     .setColor('RANDOM')
                     return balEmbed
                 } else {
-                    const required = walletBal.level * 500 + 100
+                    const required = walletBal.level * 250 + 100
                     if(setup.rankCard === false) {
                         const balEmbed = new MessageEmbed()
                             .setTitle(`${user.username}'s level`)
@@ -95,7 +95,7 @@ module.exports = {
                         const rankCard = new canvacord.Rank()
                             .setAvatar(user.displayAvatarURL({dynamic: false, format: 'png'}))
                             .setCurrentXP(walletBal.xp)
-                            .setRequiredXP(walletBal.level * 500 + 100)
+                            .setRequiredXP(walletBal.level * 250 + 100)
                             .setProgressBar('#FFA500', 'COLOR', true)
                             .setUsername(user.username)
                             .setLevel(walletBal.level)
@@ -129,7 +129,7 @@ module.exports = {
                     .setColor('RANDOM')
                     return balEmbed
                 } else {
-                    const required = walletBal.level * 500 + 100
+                    const required = walletBal.level * 250 + 100
                     if(setup.rankCard === false) {
                         const balEmbed = new MessageEmbed()
                             .setTitle(`${user.username}'s level`)
@@ -140,7 +140,7 @@ module.exports = {
                         const rankCard = new canvacord.Rank()
                             .setAvatar(user.displayAvatarURL({dynamic: false, format: 'png'}))
                             .setCurrentXP(walletBal.xp)
-                            .setRequiredXP(walletBal.level * 500 + 100)
+                            .setRequiredXP(walletBal.level * 250 + 100)
                             .setProgressBar('#FFA500', 'COLOR', true)
                             .setLevel(walletBal.level)
                             .setUsername(user.username)
