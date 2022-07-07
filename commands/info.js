@@ -59,7 +59,7 @@ module.exports = {
                 .addField("Latest Bot Announcement", `${announcement.announcement}`)
                 .addField("Guild Forms", `**Invite:** ${doc.guildInvite || 'None'}\n**Appeal Form:** ${doc.guildAppeal || 'None'}`)
                 .setColor('RANDOM')
-                .setFooter({text: 'You cannot run commands or interact with the bot in any way'})
+                .setFooter({text: 'You cannot run commands or interact with the bot in any way | Made by ThatBadName#7967'})
                 return interaction.reply({embeds: [embed], components: [row]})
             } else {           
         const doc = await setupSchema.findOne({guildId: interaction.guild.id})
@@ -102,7 +102,7 @@ module.exports = {
         .addField("Uptime:", `\`${String(days)}\` days, \`${String(hours)}\` hours, \`${String(minutes)}\` minutes, \`${String(seconds)}\` seconds`)
         .addField("Latest Bot Announcement", `${announcement.announcement}`)
         .setColor('RANDOM')
-        .setFooter({text: `${blacklist ? 'You are currently bot-banned. You cannot run any commands' : 'Hello :)'}`})
+        .setFooter({text: `${blacklist ? 'You are currently bot-banned. You cannot run any commands' : 'Hello :)'} | Made by ThatBadName#7967`})
         return interaction.reply({embeds: [embed], components: [row]})
             }
     }
