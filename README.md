@@ -21,3 +21,4 @@ If you need any help with the bot please join the support server\
 *The code for IV-5 will be kept private*
 
 **I will try and update this every week (if there is an update)**
+*Please make sure that you give me some credit for the bot. If you don't I will take action*
