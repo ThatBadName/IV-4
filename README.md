@@ -1,4 +1,5 @@
 # IV-4
+**This bot is no longer supported. Code in this repo will not be updated**
 
 ![Discord Bots](https://top.gg/api/widget/919242400738730005.svg)\
 *https://top.gg/bot/919242400738730005*
